@@ -1,6 +1,8 @@
 package com.test.CK.Surface;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.test.CK.Reports.Report;
+import com.test.CK.Space.Space;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,28 +56,25 @@ public class Surface implements Serializable {
     @NotNull(message = "expiredDate is not null")
     private LocalDateTime expiredDate;
 
+    @ManyToOne(targetEntity = Space.class)
+    @JoinColumn(name = "space_id")
+    private Space space = new Space();
 
     public Surface() {
 
     }
 
-    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, LocalDateTime expiredDate) {
+    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, List<Report> reports, LocalDateTime createdAt, LocalDateTime expiredDate, Space space) {
         this.id = id;
         this.format = format;
         this.width = width;
         this.height = height;
         this.content = content;
         this.imgUrl = imgUrl;
+        this.reports = reports;
+        this.createdAt = createdAt;
         this.expiredDate = expiredDate;
-    }
-
-    public void update(Surface surface) {
-        this.format = surface.format;
-        this.width = surface.width;
-        this.height = surface.height;
-        this.content = surface.content;
-        this.imgUrl = surface.imgUrl;
-        this.expiredDate = surface.expiredDate;
+        this.space = space;
     }
 
     public Short getId() {
@@ -126,6 +125,10 @@ public class Surface implements Serializable {
         this.imgUrl = imgUrl;
     }
 
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -140,5 +143,23 @@ public class Surface implements Serializable {
 
     public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
+    }
+
+    public Space getSpace() {
+        return space;
+    }
+
+    public void setSpace(Space space) {
+        this.space = space;
+    }
+
+    public void update(Surface updatedSurface) {
+        this.format = updatedSurface.format;
+        this.width = updatedSurface.width;
+        this.height = updatedSurface.height;
+        this.content = updatedSurface.content;
+        this.imgUrl = updatedSurface.imgUrl;
+        this.reports = updatedSurface.reports;
+        this.expiredDate = updatedSurface.expiredDate;
     }
 }
