@@ -83,6 +83,7 @@ public class Space implements Serializable {
         this.isPlanned = updatedSpace.isPlanned;
     }
 
+
     public Short getId() {
         return id;
     }
