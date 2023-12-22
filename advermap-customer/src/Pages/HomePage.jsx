@@ -11,43 +11,36 @@ import AdvertisementComponent from "../component/AdvertisementComponent";
 import SomeDetailComponent from "../component/SomeDetailComponent";
 import ToolComponent from "../component/ToolComponent";
 import { SpaceService } from "../services/SpaceServices";
+import { SurfaceServices } from "../services/SurfaceServices";
+import Text from "./../component/Text";
+import FormReport from "../component/FormReport";
 
+const defaultProps = {
+  center: {
+    lat: 10.79375530641856,
+    lng: 106.72228643720966,
+  },
+  zoom: 13,
+};
+
+const customIcon = new L.Icon({
+  iconUrl: require("../images/marker.png"),
+  iconSize: [38, 38],
+});
 export default function HomePage() {
-  const spaces = [
-    { lat: 10.79375530641856, lng: 106.72228643720966 },
-    { lat: 10.7771, lng: 106.7012 },
-    { lat: 10.7768, lng: 106.7005 },
-    { lat: 10.777, lng: 106.7008 },
-    { lat: 10.7766, lng: 106.7015 },
-    { lat: 10.7767, lng: 106.701 },
-    { lat: 10.7772, lng: 106.7011 },
-    { lat: 10.7768, lng: 106.7007 },
-    { lat: 10.7771, lng: 106.7006 },
-    { lat: 10.7773, lng: 106.7009 },
-    { lat: 10.7769, lng: 106.7013 },
-  ];
-  const defaultProps = {
-    center: {
-      lat: 10.79375530641856,
-      lng: 106.72228643720966,
-    },
-    zoom: 13,
-  };
-
-  const customIcon = new L.Icon({
-    iconUrl: require("../images/marker.png"),
-    iconSize: [38, 38],
-  });
+  const [spaces, setSpaces] = useState([]);
+  const [surfaces, setSurfaces] = useState([]);
 
   const mapRef = useRef(null);
   const geocoding = useSelector(selectDeocoding);
   const [show, setShow] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const [selectedSpace, setSelectedSpace] = useState(null);
 
   useEffect(() => {
     if (!geocoding || !mapRef.current) {
       return;
     }
-
     // Fit the map to the geocoding result
     mapRef.current.setView([geocoding.lat, geocoding.lng], defaultProps.zoom, {
       animate: true,
@@ -55,83 +48,121 @@ export default function HomePage() {
     });
   }, [geocoding]);
 
-  useEffect(() => {
-    if (show) {
-      console.log(show);
-    }
-  }, [show]);
+  const handleClickMarker = (space) => {
+    setShow(true);
+    setSelectedSpace(space);
+  };
 
   const fetchSpace = async () => {
-    const data = await SpaceService.getAll();
-    console.log(data);
+    try {
+      const data = await SpaceService.getAll();
+      setSpaces((prev) => data);
+      console.log("fetch Spaces:", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSurfaces = async (id) => {
+    try {
+      const data = await SurfaceServices.getBySpaceId(id);
+      console.log(`fetch Surfaces of Space ${id}`, data);
+      setSurfaces((prev) => data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
+    setShow(false);
     fetchSpace();
   }, []);
 
-  return (
-    <div className="h-full w-full flex flex-row">
-      {" "}
-      <div className={`relative ${show ? "h-full w-[80%]" : "h-full w-full"}`}>
-        {/* AutocompleteComponent */}
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
-          <AutocompleteComponent />
-        </div>
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
-          <ToolComponent className="w-full" />
-        </div>
+  useEffect(() => {
+    if (selectedSpace) {
+      fetchSurfaces(selectedSpace.id);
+    }
+  }, [selectedSpace]);
 
-        {/* MapContainer */}
-        <MapContainer
-          center={defaultProps.center}
-          zoom={defaultProps.zoom}
-          style={{ height: "100vh", width: "100%" }}
-          className="relative z-0"
-          ref={mapRef}
+  return (
+    <>
+      <div className="h-full w-full flex flex-row">
+        <div
+          className={`relative ${show ? "h-full w-[80%]" : "h-full w-full"}`}
         >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <MarkerClusterGroup>
-            {spaces.map((space, index) => (
-              <Marker
-                key={index}
-                position={[space.lat, space.lng]}
-                icon={customIcon}
-                eventHandlers={{
-                  click: (e) => {
-                    setShow(true);
-                  },
-                }}
-              >
-                <Popup>
-                  <SomeDetailComponent
-                    format={"Cổ động chính trị"}
-                    type={"Đất công viên"}
-                    address={
-                      "720A Đ. Điện Biên Phủ, Vinhomes Tân Cảng, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam"
-                    }
-                    is_planned={true}
-                  />
-                </Popup>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-        </MapContainer>
+        <FormReport show={showForm} setShow={setShowForm}/>
+
+          {/* AutocompleteComponent */}
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
+            <AutocompleteComponent />
+          </div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
+            <ToolComponent className="w-full" />
+          </div>
+
+          {/* MapContainer */}
+          <MapContainer
+            center={defaultProps.center}
+            zoom={defaultProps.zoom}
+            style={{ height: "100vh", width: "100%" }}
+            className="relative z-0"
+            ref={mapRef}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            {spaces.length > 0 ? (
+              <MarkerClusterGroup>
+                {spaces.map((space, index) => (
+                  <Marker
+                    key={index}
+                    position={[space.latitude, space.longitude]}
+                    icon={customIcon}
+                    eventHandlers={{
+                      click: (e) => handleClickMarker(space),
+                    }}
+                  >
+                    <Popup>
+                      <SomeDetailComponent
+                        format={space.format}
+                        type={space.type}
+                        address={space.address}
+                        planned={space.planned}
+                      />
+                    </Popup>
+                  </Marker>
+                ))}
+              </MarkerClusterGroup>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </MapContainer>
+        </div>
+        {show && (
+          <div className="flex flex-col h-full w-[20%] overflow-auto">
+            {surfaces.length > 0 ? (
+              surfaces.map((surface) => (
+                <AdvertisementComponent
+                  className=" m-2 p-2 rounded-xl border-gray-200"
+                  format={surface.format}
+                  width={surface.width}
+                  height={surface.height}
+                  type={selectedSpace.type}
+                  formatspace={selectedSpace.format}
+                  address={selectedSpace.address}
+                  surfaceid={surface.id}
+                  selectedSpace={selectedSpace}
+                />
+              ))
+            ) : (
+              <Text className={"font-bold text-center m-auto"}>
+                Không có biển quảng cáo trên địa điểm này
+              </Text>
+            )}
+          </div>
+        )}
       </div>
-      {show && (
-        <AdvertisementComponent
-          className=" m-2 h-fit w-[20%] p-2 rounded-xl border-gray-200"
-          format={"Trụ, cụm pano"}
-          width={"2.5m"}
-          height={"10m"}
-          type={"Đất công"}
-          formatspace={"Cổ động chính trị"}
-          address={"Đồng khởi - Nguyễn Du"}
-        />
-      )}
-    </div>
+    </>
   );
 }
