@@ -4,6 +4,7 @@ import com.test.CK.Reports.Report;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -49,7 +50,6 @@ public class Surface implements Serializable {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-
     @Column()
     @NotNull(message = "expiredDate is not null")
     private LocalDateTime expiredDate;
@@ -69,7 +69,7 @@ public class Surface implements Serializable {
         this.expiredDate = expiredDate;
     }
 
-    public void update(Surface surface){
+    public void update(Surface surface) {
         this.format = surface.format;
         this.width = surface.width;
         this.height = surface.height;
@@ -77,6 +77,7 @@ public class Surface implements Serializable {
         this.imgUrl = surface.imgUrl;
         this.expiredDate = surface.expiredDate;
     }
+
     public Short getId() {
         return id;
     }

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "report")
 public class Report implements Serializable {
 
-    static final int[] STATE_VALUES={-1,0,1};
+    static final int[] STATE_VALUES = {-1, 0, 1};
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -60,21 +60,26 @@ public class Report implements Serializable {
     @ManyToOne(targetEntity = Surface.class)
     @JoinColumn(name = "surface_id")
     @JsonIgnore
-    private Surface surface=new Surface();
+    private Surface surface = new Surface();
 
-    public Report(){}
+    @Column
+    private String userAddress;
 
-    public Report(Short id, String address, String format, String name,  String content, String email, String phone, Short state, String imgUrl, Surface surface) {
+    public Report() {
+    }
+
+    public Report(Short id, String address, String format, String name, String content, String email, String phone, Short state, String imgUrl, Surface surface, String userAddress) {
         this.id = id;
-            this.address = address;
-            this.format = format;
-            this.name = name;
-            this.content = content;
-            this.email = email;
-            this.phone = phone;
-            this.state = state;
-            this.imgUrl = imgUrl;
-            this.surface = surface;
+        this.address = address;
+        this.format = format;
+        this.name = name;
+        this.content = content;
+        this.email = email;
+        this.phone = phone;
+        this.state = state;
+        this.imgUrl = imgUrl;
+        this.surface = surface;
+        this.userAddress = userAddress;
     }
 
     public Short getId() {
@@ -83,6 +88,14 @@ public class Report implements Serializable {
 
     public void setId(Short id) {
         this.id = id;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     public String getAddress() {
