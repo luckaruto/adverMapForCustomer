@@ -2,6 +2,7 @@ import React from "react";
 import Text from "./Text";
 import { ReactComponent as SvgInformation } from "../images/information.svg";
 import { ReactComponent as SvgReport } from "../images/report.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function AdvertisementComponent({
   format,
@@ -10,8 +11,10 @@ export default function AdvertisementComponent({
   type,
   formatspace,
   address,
+  surfaceid,
   className,
 }) {
+  const navigate = useNavigate();
   return (
     <div className={`flex flex-col border-2 rounded-sm ${className}`}>
       <div className="flex flex-col gap-2">
@@ -32,7 +35,15 @@ export default function AdvertisementComponent({
           <Text>{`Phân loại: ${type}`} </Text>
         </div>
         <div className="flex flex-row justify-between items-center">
-          <SvgInformation className="h-6 w-6" />
+          <div
+            onClick={() => {
+              navigate(`/details/${surfaceid}`);
+            }}
+          >
+            {" "}
+            <SvgInformation className="h-6 w-6" />
+          </div>
+
           <div className="border-2 border-red-500 p-1 rounded-md flex flex-row gap-2 justify-center items-center">
             <SvgReport className="h-4 w-4" />
             <Text className="text-red-500">Báo cáo vi phạm</Text>

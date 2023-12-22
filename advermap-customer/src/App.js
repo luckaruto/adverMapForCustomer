@@ -4,6 +4,8 @@ import React from "react";
 
 import AutocompleteComponent from "./component/AutocompleteComponent";
 import AdvertisementComponent from "./component/AdvertisementComponent";
+import DetailOfAdvertisement from "./component/DetailOfAdvertisement";
+import DetailsPage from "./Pages/DetailsPage";
 
 function App() {
   const Layout = () => {
@@ -22,8 +24,8 @@ function App() {
       children: [
         { path: "/", element: <HomePage /> },
         {
-          path: "/test",
-          element: <AdvertisementComponent></AdvertisementComponent>,
+          path: "/details/:surfaceid",
+          element: <DetailsPage />,
         },
       ],
     },
