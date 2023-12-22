@@ -5,7 +5,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 
-import { HOST } from "./constants";
+// import { HOST } from "./constants";
 
 export default function FormReport() {
   const [editorData, setEditorData] = useState("");
@@ -18,7 +18,7 @@ export default function FormReport() {
             const file = await loader.file;
             const response = await axios.request({
               method: "POST",
-              url: `${HOST}/upload_files`,
+              url: `${"12222"}/upload_files`,
               data: {
                 files: file,
               },
@@ -27,7 +27,7 @@ export default function FormReport() {
               },
             });
             resolve({
-              default: `${HOST}/${response.data.filename}`,
+              default: `${"`11111"}/${response.data.filename}`,
             });
           } catch (error) {
             reject("Hello");
