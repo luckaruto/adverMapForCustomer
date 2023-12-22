@@ -31,42 +31,6 @@ public class SurfaceController {
         }
     }
 
-    @PostMapping(path = "/space/{spaceId}/{surfaceId}")
-    public ResponseEntity<String> addToSpace(@PathVariable Short spaceId, @PathVariable Short surfaceId) {
-        HttpStatus status = service.addToSpace(spaceId, surfaceId);
-        switch (status) {
-            case OK -> {
-                String str = "Add Surface " + surfaceId + " to Space " + spaceId + " Success";
-                return new ResponseEntity<>(str, status);
-            }
-            case NOT_FOUND -> {
-                String str = "Add Surface " + surfaceId + " to Space " + spaceId + " Failed";
-                return new ResponseEntity<>(str, status);
-            }
-            default -> {
-                return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-    }
-
-    @DeleteMapping(path = "/space/{spaceId}/{surfaceId}")
-    public ResponseEntity<String> deleteFrom(@PathVariable Short spaceId, @PathVariable Short surfaceId) {
-        HttpStatus status = service.deleteFromSpace(spaceId, surfaceId);
-        switch (status) {
-            case OK -> {
-                String str = "Delete Surface " + surfaceId + " to Space " + spaceId + " Success";
-                return new ResponseEntity<>(str, status);
-            }
-            case NOT_FOUND -> {
-                String str = "Delete Surface " + surfaceId + " to Space " + spaceId + " Failed";
-                return new ResponseEntity<>(str, status);
-            }
-            default -> {
-                return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-    }
-
     @GetMapping
     public ResponseEntity<List<Surface>> getAll() {
         List<Surface> surfaces = service.getAll();
