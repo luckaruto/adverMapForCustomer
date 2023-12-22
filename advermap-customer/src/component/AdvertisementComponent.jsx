@@ -13,6 +13,7 @@ export default function AdvertisementComponent({
   address,
   surfaceid,
   className,
+  selectedSpace
 }) {
   const navigate = useNavigate();
   return (
@@ -35,16 +36,17 @@ export default function AdvertisementComponent({
           <Text>{`Phân loại: ${type}`} </Text>
         </div>
         <div className="flex flex-row justify-between items-center">
-          <div
+          <button 
             onClick={() => {
-              navigate(`/details/${surfaceid}`);
+              navigate(`/details/${surfaceid}`,{state:selectedSpace});
             }}
+            
           >
             {" "}
             <SvgInformation className="h-6 w-6" />
-          </div>
+          </button>
 
-          <div className="border-2 border-red-500 p-1 rounded-md flex flex-row gap-2 justify-center items-center">
+          <div className="border-2 border-red-500 p-1 rounded-md flex flex-row gap-2 justify-center items-center cursor-pointer ">
             <SvgReport className="h-4 w-4" />
             <Text className="text-red-500">Báo cáo vi phạm</Text>
           </div>

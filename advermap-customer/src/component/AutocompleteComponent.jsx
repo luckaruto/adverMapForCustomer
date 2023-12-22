@@ -3,7 +3,7 @@ import Autocomplete from "react-google-autocomplete";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { ReactComponent as SvgFind } from "../images/find.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setGeocoding } from "../redux/reducers";
+import { setGeocoding } from "../redux/navSlice";
 
 export default function AutocompleteComponent() {
   const inputRef = useRef();
