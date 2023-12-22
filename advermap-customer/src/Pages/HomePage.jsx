@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import AutocompleteComponent from "../component/AutocompleteComponent";
 import { useSelector } from "react-redux";
-import { selectDeocoding } from "../redux/reducers";
+import { selectGeocoding } from "../redux/reducers";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import AdvertisementComponent from "../component/AdvertisementComponent";
@@ -39,7 +39,7 @@ export default function HomePage() {
   });
 
   const mapRef = useRef(null);
-  const geocoding = useSelector(selectDeocoding);
+  const geocoding = useSelector(selectGeocoding);
   const [show, setShow] = useState(false);
 
   useEffect(() => {

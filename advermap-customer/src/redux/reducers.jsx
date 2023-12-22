@@ -22,7 +22,7 @@ export const navSlices = createSlice({
 export const { setOrigin, setGeocoding } = navSlices.actions;
 
 // selector
-export const selectorigin = (state) => state.nav.origin;
-export const selectDeocoding = (state) => state.nav.geocoding;
+export const selectOrigin = (state) => state.nav.origin;
+export const selectGeocoding = (state) => state.nav.geocoding;
 
 export default navSlices.reducer;

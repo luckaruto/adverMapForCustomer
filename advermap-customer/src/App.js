@@ -6,6 +6,7 @@ import AutocompleteComponent from "./component/AutocompleteComponent";
 import AdvertisementComponent from "./component/AdvertisementComponent";
 import DetailOfAdvertisement from "./component/DetailOfAdvertisement";
 import DetailsPage from "./Pages/DetailsPage";
+import FormReport from "./component/FormReport";
 
 function App() {
   const Layout = () => {
@@ -26,6 +27,10 @@ function App() {
         {
           path: "/details/:surfaceid",
           element: <DetailsPage />,
+        },
+        {
+          path: "test",
+          element: <FormReport />,
         },
       ],
     },
