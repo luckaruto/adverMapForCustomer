@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@material-tailwind/react": "^2.1.8",
     "@react-google-maps/api": "^2.19.2",
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-dom": "^5.17.0",
