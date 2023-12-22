@@ -4,12 +4,13 @@ import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import AutocompleteComponent from "../component/AutocompleteComponent";
 import { useSelector } from "react-redux";
-import { selectDeocoding } from "../redux/reducers";
+import { selectDeocoding } from "../redux/navSlice";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import AdvertisementComponent from "../component/AdvertisementComponent";
 import SomeDetailComponent from "../component/SomeDetailComponent";
 import ToolComponent from "../component/ToolComponent";
+import { SpaceService } from "../services/SpaceServices";
 
 export default function HomePage() {
   const spaces = [
@@ -60,6 +61,15 @@ export default function HomePage() {
     }
   }, [show]);
 
+  const fetchSpace = async () => {
+    const data = await SpaceService.getAll();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchSpace();
+  }, []);
+
   return (
     <div className="h-full w-full flex flex-row">
       {" "}
@@ -69,7 +79,7 @@ export default function HomePage() {
           <AutocompleteComponent />
         </div>
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
-          <ToolComponent className="w-full"></ToolComponent>\
+          <ToolComponent className="w-full" />
         </div>
 
         {/* MapContainer */}
@@ -104,7 +114,7 @@ export default function HomePage() {
                       "720A Đ. Điện Biên Phủ, Vinhomes Tân Cảng, Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam"
                     }
                     is_planned={true}
-                  ></SomeDetailComponent>
+                  />
                 </Popup>
               </Marker>
             ))}
@@ -120,7 +130,7 @@ export default function HomePage() {
           type={"Đất công"}
           formatspace={"Cổ động chính trị"}
           address={"Đồng khởi - Nguyễn Du"}
-        ></AdvertisementComponent>
+        />
       )}
     </div>
   );

@@ -23,7 +23,7 @@ function App() {
         { path: "/", element: <HomePage /> },
         {
           path: "/test",
-          element: <AdvertisementComponent></AdvertisementComponent>,
+          element: <AdvertisementComponent/>
         },
       ],
     },
