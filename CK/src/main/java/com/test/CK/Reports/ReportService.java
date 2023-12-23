@@ -29,7 +29,6 @@ public class ReportService {
             Surface surface = optionalSurface.get();
             report.setSurface(surface);
             reportRepository.save(report);
-            surface.getReports().add(report); // Ensure the bidirectional relationship is updated
             surfaceRepository.save(surface); // Save the updated Surface entity
             return HttpStatus.OK;
         }

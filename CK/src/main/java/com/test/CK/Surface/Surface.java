@@ -1,6 +1,7 @@
 package com.test.CK.Surface;
 
 import com.test.CK.Reports.Report;
+import com.test.CK.Space.Space;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
@@ -39,12 +40,12 @@ public class Surface implements Serializable {
     @NotNull(message = "imgUrl is not null")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "surface", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "space_id")
+    private Space space;
 
-    public List<Report> getReports() {
-        return reports;
-    }
+    @OneToMany(mappedBy = "surface")
+    private List<Report> reports;
 
     @Column(updatable = true)
     @CreationTimestamp
@@ -59,13 +60,15 @@ public class Surface implements Serializable {
 
     }
 
-    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, LocalDateTime expiredDate) {
+    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, Space space, List<Report> reports, LocalDateTime expiredDate) {
         this.id = id;
         this.format = format;
         this.width = width;
         this.height = height;
         this.content = content;
         this.imgUrl = imgUrl;
+        this.space = space;
+        this.reports = reports;
         this.expiredDate = expiredDate;
     }
 
@@ -76,6 +79,22 @@ public class Surface implements Serializable {
         this.content = surface.content;
         this.imgUrl = surface.imgUrl;
         this.expiredDate = surface.expiredDate;
+    }
+
+    public Space getSpace() {
+        return space;
+    }
+
+    public void setSpace(Space space) {
+        this.space = space;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
     public Short getId() {

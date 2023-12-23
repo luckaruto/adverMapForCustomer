@@ -53,13 +53,13 @@ public class Space implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(targetEntity = Surface.class)
+    @OneToMany(mappedBy = "space")
     @JsonIgnore
     private Set<Surface> surfaces=new LinkedHashSet<>();
 
     public Space(){}
 
-    public Space(Short id, String address, float longitude, float latitude, String type, String format, Short ward, String imgUrl, boolean isPlanned, Set<Surface> surfaces) {
+    public Space(Short id, String address, float longitude, float latitude, String type, String format, Short ward, String imgUrl, boolean isPlanned, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Surface> surfaces) {
         this.id = id;
         this.address = address;
         this.longitude = longitude;
@@ -69,6 +69,8 @@ public class Space implements Serializable {
         this.ward = ward;
         this.imgUrl = imgUrl;
         this.isPlanned = isPlanned;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.surfaces = surfaces;
     }
 
