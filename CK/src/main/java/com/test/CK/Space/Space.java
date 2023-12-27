@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -53,9 +54,10 @@ public class Space implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(targetEntity = Surface.class)
-    @JsonIgnore
-    private Set<Surface> surfaces=new LinkedHashSet<>();
+    
+	 @JsonIgnore
+	 @OneToMany(mappedBy = "space")
+	 private Set<Surface> surfaces = new HashSet<>();
 
     public Space(){}
 

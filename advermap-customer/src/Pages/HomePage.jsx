@@ -53,32 +53,31 @@ export default function HomePage() {
     setSelectedSpace(space);
   };
 
-  const fetchSpace = async () => {
-    try {
-      const data = await SpaceService.getAll();
-      setSpaces((prev) => data);
-      console.log("fetch Spaces:", data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchSurfaces = async (id) => {
-    try {
-      const data = await SurfaceServices.getBySpaceId(id);
-      console.log(`fetch Surfaces of Space ${id}`, data);
-      setSurfaces((prev) => data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchSpace = async () => {
+      try {
+        const data = await SpaceService.getAll();
+        setSpaces((prev) => data);
+        console.log("fetch Spaces:", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     setShow(false);
     fetchSpace();
   }, []);
 
   useEffect(() => {
+    const fetchSurfaces = async (id) => {
+      try {
+        const data = await SurfaceServices.getBySpaceId(id);
+        console.log(`fetch Surfaces of Space ${id}`, data);
+        setSurfaces((prev) => data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (selectedSpace) {
       fetchSurfaces(selectedSpace.id);
     }
