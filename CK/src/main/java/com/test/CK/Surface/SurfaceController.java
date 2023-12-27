@@ -58,6 +58,18 @@ public class SurfaceController {
             }
         }
     }
+    @PostMapping(path = "/{spaceId}")
+    public ResponseEntity<String> addToSpace(@RequestBody @Valid Surface surface,@PathVariable Short  spaceId) {
+        HttpStatus status = service.addToSpace(spaceId,surface);
+        switch (status) {
+            case OK -> {
+                return new ResponseEntity<>("Create surface to space Success", status);
+            }
+            default -> {
+                return new ResponseEntity<>("Create surface to space Failed", HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Short id) {

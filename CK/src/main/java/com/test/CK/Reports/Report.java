@@ -57,10 +57,10 @@ public class Report implements Serializable {
     @NotNull(message = "img url not null")
     private String imgUrl;
 
-    @ManyToOne(targetEntity = Surface.class)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "surface_id")
     @JsonIgnore
-    private Surface surface = new Surface();
+    private Surface surface;
 
     @Column
     private String userAddress;
@@ -68,11 +68,12 @@ public class Report implements Serializable {
     public Report() {
     }
 
-    public Report(Short id, String address, String format, String name, String content, String email, String phone, Short state, String imgUrl, Surface surface, String userAddress) {
+    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, Short state, String imgUrl, Surface surface, String userAddress) {
         this.id = id;
         this.address = address;
         this.format = format;
         this.name = name;
+        this.reportDate = reportDate;
         this.content = content;
         this.email = email;
         this.phone = phone;
@@ -88,14 +89,6 @@ public class Report implements Serializable {
 
     public void setId(Short id) {
         this.id = id;
-    }
-
-    public String getUserAddress() {
-        return userAddress;
-    }
-
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
     }
 
     public String getAddress() {
@@ -176,5 +169,13 @@ public class Report implements Serializable {
 
     public void setSurface(Surface surface) {
         this.surface = surface;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 }
