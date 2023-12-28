@@ -724,6 +724,14 @@ video {
   top: 4%;
 }
 
+.bottom-3 {
+  bottom: 0.75rem;
+}
+
+.bottom-1 {
+  bottom: 0.25rem;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -876,6 +884,10 @@ video {
   margin-top: 0.375rem;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -1004,6 +1016,10 @@ video {
   height: 74px;
 }
 
+.h-\[80\%\] {
+  height: 80%;
+}
+
 .h-fit {
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -1021,14 +1037,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[50\%\] {
-  height: 50%;
-}
-
-.h-\[20\%\] {
-  height: 20%;
 }
 
 .max-h-96 {
@@ -1159,6 +1167,10 @@ video {
   width: 60%;
 }
 
+.w-\[70\%\] {
+  width: 70%;
+}
+
 .w-\[74px\] {
   width: 74px;
 }
@@ -1254,10 +1266,6 @@ video {
 
 .max-w-full {
   max-width: 100%;
-}
-
-.max-w-lg {
-  max-width: 32rem;
 }
 
 .flex-none {
@@ -1524,6 +1532,10 @@ video {
   overflow: visible !important;
 }
 
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
 .overflow-x-hidden {
   overflow-x: hidden;
 }
@@ -1592,10 +1604,6 @@ video {
 
 .rounded-xl {
   border-radius: 0.75rem;
-}
-
-.rounded-\[8\%\] {
-  border-radius: 8%;
 }
 
 .rounded-e-xl {
@@ -1965,10 +1973,6 @@ video {
   background-color: rgb(234 179 8 / 0.2);
 }
 
-.bg-opacity-10 {
-  --tw-bg-opacity: 0.1;
-}
-
 .bg-opacity-60 {
   --tw-bg-opacity: 0.6;
 }
@@ -1977,24 +1981,12 @@ video {
   --tw-bg-opacity: 0.8;
 }
 
+.bg-opacity-\[55\%\] {
+  --tw-bg-opacity: 55%;
+}
+
 .bg-opacity-\[60\%\] {
   --tw-bg-opacity: 60%;
-}
-
-.bg-opacity-0 {
-  --tw-bg-opacity: 0;
-}
-
-.bg-opacity-20 {
-  --tw-bg-opacity: 0.2;
-}
-
-.bg-opacity-30 {
-  --tw-bg-opacity: 0.3;
-}
-
-.bg-opacity-40 {
-  --tw-bg-opacity: 0.4;
 }
 
 .bg-gradient-to-tr {
@@ -3038,6 +3030,21 @@ video {
   content: var(--tw-content);
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
 .\[-webkit-appearance\:none\] {
   -webkit-appearance: none;
 }
@@ -3059,6 +3066,26 @@ iframe#webpack-dev-server-client-overlay {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.backdropTeacher {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+}
+
+.modalTeacher {
+  position: fixed;
+  top: 10%;
+  bottom: 10%;
+  left: 20%;
+  right: 20%;
+  width: 60%;
+  z-index: 100;
+  overflow: hidden;
 }
 
 .App-header {
@@ -3930,6 +3957,12 @@ iframe#webpack-dev-server-client-overlay {
 
 .hover\:opacity-75:hover {
   opacity: 0.75;
+}
+
+.hover\:shadow-bs1:hover {
+  --tw-shadow: 0px 50px  80px 0px #0000000c;
+  --tw-shadow-colored: 0px 50px 80px 0px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .hover\:shadow-lg:hover {

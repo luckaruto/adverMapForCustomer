@@ -27,7 +27,7 @@ export default function AutocompleteComponent() {
 
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyBagvrzq7ow8zSvI-VtFMbAXn38YmvtUeA"
+      googleMapsApiKey="AIzaSyB11l8Cra3wEure_mAn1gaOuNkWKnRY1YM"
       libraries={["places"]}
     >
       <StandaloneSearchBox
