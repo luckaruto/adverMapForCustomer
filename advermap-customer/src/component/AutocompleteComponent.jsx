@@ -4,6 +4,7 @@ import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { ReactComponent as SvgFind } from "../images/find.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setGeocoding } from "../redux/navSlice";
+import env from "react-dotenv";
 
 export default function AutocompleteComponent() {
   const inputRef = useRef();
@@ -24,6 +25,7 @@ export default function AutocompleteComponent() {
     }
   };
   console.log(states.geocoding);
+  console.log(env.Google_API);
 
   return (
     <LoadScript

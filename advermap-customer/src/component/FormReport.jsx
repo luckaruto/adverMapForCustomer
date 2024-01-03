@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Text from "./Text";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { storage } from "../firebase";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import ReCAPTCHA from "react-google-recaptcha";
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -41,6 +42,7 @@ class MyUploadAdapter {
 }
 
 export default function FormReport() {
+  const recaptcha = useRef();
   const [editorData, setEditorData] = useState("");
 
   function extractImageUrls(html) {
@@ -69,19 +71,39 @@ export default function FormReport() {
       return new MyUploadAdapter(loader);
     };
   }
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      alert("Please verify the reCAPTCHA!");
+    } else {
+      const formData = {
+        option: event.target.elements["grid-option"].value,
+        name: event.target.elements["grid-name"].value,
+        email: event.target.elements["email"].value,
+        phone: event.target.elements["phone"].value,
+        content: editorData,
+      };
+      const imageUrls = extractImageUrls(editorData);
+      console.log("Image URLs:", imageUrls);
 
-    const formData = {
-      option: event.target.elements["grid-option"].value,
-      name: event.target.elements["grid-name"].value,
-      email: event.target.elements["email"].value,
-      content: editorData,
-    };
-    const imageUrls = extractImageUrls(editorData);
-    console.log("Image URLs:", imageUrls);
+      console.log("Form Data:", formData);
+      // const res = await fetch("http://localhost:8000/verify", {
+      //   method: "POST",
+      //   body: JSON.stringify({ captchaValue }),
+      //   headers: {
+      //     "content-type": "application/json",
+      //   },
+      // });
+      // const data = await res.json();
 
-    console.log("Form Data:", formData);
+      if (formData) {
+        // make form submission
+        alert("Form submission successful!");
+      } else {
+        alert("reCAPTCHA validation failed!");
+      }
+    }
   };
   return (
     <div className=" flex items-center justify-center h-full w-[70%] ">
@@ -135,7 +157,7 @@ export default function FormReport() {
               Please fill out this field.
             </p>
           </div>
-          <div className="w-full md:w-1/2 px-3">
+          <div className="w-full md:w-1/2 px-3 mb-6">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               htmlFor="email"
@@ -147,6 +169,20 @@ export default function FormReport() {
               id="email"
               type="email"
               placeholder="123@gmail.com"
+            />
+          </div>
+          <div className="w-full md:w-1/2 px-3">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              htmlFor="phone"
+            >
+              Số điện thoại
+            </label>
+            <input
+              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              id="phone"
+              type="phone"
+              placeholder=""
             />
           </div>
           <div className="mt-6 w-full md:w-1/2 px-3">
@@ -163,6 +199,10 @@ export default function FormReport() {
             />
           </div>
         </div>
+        <ReCAPTCHA
+          sitekey="6LdelEQpAAAAAGJJ6NI1H_o0SEIKxtBa-ewUnUYS"
+          ref={recaptcha}
+        />
         <button
           type="submit"
           className="  bg-blue-400 p-2 rounded-md  w-[20%] ml-auto"

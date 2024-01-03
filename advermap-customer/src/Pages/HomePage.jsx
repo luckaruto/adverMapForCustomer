@@ -4,7 +4,13 @@ import "leaflet/dist/leaflet.css";
 import { Icon, setOptions } from "leaflet";
 import AutocompleteComponent from "../component/AutocompleteComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGeocoding, selectOrigin, setOrigin } from "../redux/navSlice";
+import {
+  selectGeocoding,
+  selectOrigin,
+  setOrigin,
+  selectReportValue,
+  selectAdverValue,
+} from "../redux/navSlice";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import AdvertisementComponent from "../component/AdvertisementComponent";
@@ -29,6 +35,17 @@ const customIcon = new L.Icon({
   iconUrl: require("../images/marker.png"),
   iconSize: [38, 38],
 });
+
+const customIconReportRed = new L.Icon({
+  iconUrl: require("../images/reportRed.png"),
+  iconSize: [38, 38],
+});
+
+const customIconReportGreen = new L.Icon({
+  iconUrl: require("../images/reportGreen.png"),
+  iconSize: [38, 38],
+});
+
 export default function HomePage() {
   const [spaces, setSpaces] = useState([]);
   const [surfaces, setSurfaces] = useState([]);
@@ -38,6 +55,8 @@ export default function HomePage() {
   const mapRef = useRef(null);
   const geocoding = useSelector(selectGeocoding);
   const origin = useSelector(selectOrigin);
+  const reportValue = useSelector(selectReportValue);
+  const AdverValue = useSelector(selectAdverValue);
   const [show, setShow] = useState(false);
 
   const [selectedSpace, setSelectedSpace] = useState(null);
@@ -64,6 +83,10 @@ export default function HomePage() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
+  const HandleTrue = () => {
+    setState(true);
+  };
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.permissions
@@ -87,23 +110,28 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (origin && !geocoding) {
-      mapRef.current.setView([origin.lat, origin.lng], defaultProps.zoom, {
-        animate: true,
-        duration: 1,
-      });
-    } else if (geocoding && origin) {
-      mapRef.current.setView(
-        [geocoding.lat, geocoding.lng],
-        defaultProps.zoom,
-        {
-          animate: true,
-          duration: 1,
-        }
-      );
-    } else {
-      return;
-    }
+    setTimeout(() => {
+      if (origin && !geocoding) {
+        console.log(origin);
+        if (origin !== null) {
+          mapRef.current.setView([origin.lat, origin.lng], defaultProps.zoom, {
+            animate: true,
+            duration: 1,
+          });
+        } else return;
+      } else if (geocoding && origin) {
+        mapRef.current.setView(
+          [geocoding.lat, geocoding.lng],
+          defaultProps.zoom,
+          {
+            animate: true,
+            duration: 1,
+          }
+        );
+      } else {
+        return;
+      }
+    }, 500);
 
     // Fit the map to the geocoding result
   }, [geocoding, origin]);
@@ -155,13 +183,9 @@ export default function HomePage() {
 
   if (spaces.length <= 0) return <Loader title="Loading songs..." />;
 
-  const HandleTrue = () => {
-    setState(true);
-  };
-
   return (
     <>
-      {state == true && !origin && <ModelReport HandleFalse={HandleFalse} />}
+      {state == true && <ModelReport HandleFalse={HandleFalse} />}
       <div className="h-full w-full flex flex-row">
         <div
           className={`relative ${show ? "h-full w-[80%]" : "h-full w-full"}`}
@@ -188,25 +212,46 @@ export default function HomePage() {
             />
             {spaces.length > 0 ? (
               <MarkerClusterGroup>
-                {spaces.map((space, index) => (
-                  <Marker
-                    key={index}
-                    position={[space.latitude, space.longitude]}
-                    icon={customIcon}
-                    eventHandlers={{
-                      click: (e) => handleClickMarker(space),
-                    }}
-                  >
-                    <Popup>
-                      <SomeDetailComponent
-                        format={space.format}
-                        type={space.type}
-                        address={space.address}
-                        planned={space.planned}
-                      />
-                    </Popup>
-                  </Marker>
-                ))}
+                {AdverValue &&
+                  spaces.map((space, index) => (
+                    <Marker
+                      key={index}
+                      position={[space.latitude, space.longitude]}
+                      icon={customIcon}
+                      eventHandlers={{
+                        click: (e) => handleClickMarker(space),
+                      }}
+                    >
+                      <Popup>
+                        <SomeDetailComponent
+                          format={space.format}
+                          type={space.type}
+                          address={space.address}
+                          planned={space.planned}
+                        />
+                      </Popup>
+                    </Marker>
+                  ))}
+                {reportValue &&
+                  spaces.map((space, index) => (
+                    <Marker
+                      key={index}
+                      position={[space.latitude, space.longitude]}
+                      icon={customIconReportGreen}
+                      eventHandlers={{
+                        click: (e) => handleClickMarker(space),
+                      }}
+                    >
+                      <Popup>
+                        <SomeDetailComponent
+                          format={space.format}
+                          type={space.type}
+                          address={space.address}
+                          planned={space.planned}
+                        />
+                      </Popup>
+                    </Marker>
+                  ))}
               </MarkerClusterGroup>
             ) : (
               <p>Loading...</p>

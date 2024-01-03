@@ -1,19 +1,14 @@
 import React from "react";
-import markerImage from "../images/marker.png";
 import { Carousel } from "@material-tailwind/react"; // Correct import
 import Text from "./Text";
-
-export default function DetailOfAdvertisement({
-  format,
-  width,
-  height,
-  img_url,
-  content,
-  created_at,
-  updated_at,
-  type,
-  formatspace,
+export default function ReportComponent({
+  reportDate,
+  state,
   address,
+  content,
+  email,
+  name,
+  phone,
   className,
 }) {
   return (
@@ -39,20 +34,17 @@ export default function DetailOfAdvertisement({
         />
       </Carousel>
       <div className="ml-3 flex flex-col gap-3">
-        <Text className="font-extrabold text-[30px]">
-          Thông tin chi tiết :{" "}
-        </Text>
-        <Text className="font-medium">{`Loại biển quảng cáo: ${format}`}</Text>
+        <Text className="font-extrabold text-[30px]">Hình thức báo cáo : </Text>
+        <Text className="font-medium">{`Họ và tên: ${name}`}</Text>
         <Text className="font-thin">{`${address}`}</Text>
-        <Text className="font-medium">
-          {`Kích thước: ${width}m X ${height}m`}
-        </Text>
-        <Text className="font-medium">{`Nội dung biển quảng cáo: ${content}`}</Text>
-        <Text className="font-medium">{`Ngày đặt: ${created_at} - Ngày đến hạn: ${updated_at}`}</Text>
-        <Text className="font-medium">{`Phân loại: ${type}`}</Text>
-        <Text className="font-medium">{`Hình thức: ${formatspace}`}</Text>
+        <Text className="font-medium">{`Email: ${email}`}</Text>
+        <Text className="font-medium">{`Phone: ${phone}`}</Text>
+        <Text className="font-medium">{`Nội dung báo cáo: ${content}`}</Text>
+        <Text className="font-medium">{`Ngày tạo: ${reportDate}`}</Text>
 
-        <Text className="font-medium">{`Loại biển quảng cáo: ${format}`}</Text>
+        <Text className="font-medium">{`Tình trạng xử lý: ${
+          state ? "Đã xử lý" : "Đang xử lý"
+        }`}</Text>
       </div>
     </div>
   );
