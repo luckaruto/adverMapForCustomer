@@ -4,6 +4,7 @@ import React from "react";
 
 import DetailsPage from "./Pages/DetailsPage";
 import FormReport from "./component/FormReport";
+import ReportComponent from './component/ReportComponent';
 
 function App() {
   const Layout = () => {
@@ -21,7 +22,6 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/", element: <HomePage /> },
-        { path: "/test", element: <FormReport /> },
         {
           path: "/details/:surfaceId",
           element: <DetailsPage />,

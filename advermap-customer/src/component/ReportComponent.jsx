@@ -39,7 +39,11 @@ export default function ReportComponent({
         <Text className="font-thin">{`${address}`}</Text>
         <Text className="font-medium">{`Email: ${email}`}</Text>
         <Text className="font-medium">{`Phone: ${phone}`}</Text>
-        <Text className="font-medium">{`Nội dung báo cáo: ${content}`}</Text>
+        <Text className="font-medium">{`Nội dung báo cáo:`}</Text>
+        <div
+          className="bg-[#f6eee3] p-4 rounded-md"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
         <Text className="font-medium">{`Ngày tạo: ${reportDate}`}</Text>
 
         <Text className="font-medium">{`Tình trạng xử lý: ${

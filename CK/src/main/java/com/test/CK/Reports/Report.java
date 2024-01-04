@@ -21,7 +21,6 @@ public class Report implements Serializable {
     private Short id;
 
     @Column(columnDefinition="TEXT")
-    @NotNull(message = "address is not null")
     private String address;
 
     @Column
@@ -50,7 +49,6 @@ public class Report implements Serializable {
     private String phone;
 
     @Column
-    @NotNull(message = "state is not null")
     private Short state;
 
     @Column(columnDefinition="TEXT")
@@ -81,6 +79,10 @@ public class Report implements Serializable {
         this.imgUrl = imgUrl;
         this.surface = surface;
         this.userAddress = userAddress;
+
+        if(state==null){
+            this.state=0;
+        }
     }
 
     public Short getId() {
