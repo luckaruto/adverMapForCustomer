@@ -16,6 +16,7 @@ public class SurfaceService {
     public SurfaceService(SurfaceRepository surfaceRepository, SpaceRepository spaceRepository) {
         this.surfaceRepository = surfaceRepository;
         this.spaceRepository = spaceRepository;
+
     }
 
     HttpStatus addToSpace(Short spaceId, Surface surface) {
@@ -41,6 +42,7 @@ public class SurfaceService {
             surfaceRepository.save(surface);
             return HttpStatus.OK;
         }
+
     }
 
     Set<Surface> getAllBySpaceId(Short id) {

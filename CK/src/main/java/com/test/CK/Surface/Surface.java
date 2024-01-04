@@ -1,5 +1,6 @@
 package com.test.CK.Surface;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.test.CK.Reports.Report;
 import com.test.CK.Space.Space;
 import jakarta.persistence.*;
@@ -55,12 +56,13 @@ public class Surface implements Serializable {
     @NotNull(message = "expiredDate is not null")
     private LocalDateTime expiredDate;
 
-
     public Surface() {
 
     }
 
+
     public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, Space space, List<Report> reports, LocalDateTime expiredDate) {
+
         this.id = id;
         this.format = format;
         this.width = width;
@@ -69,16 +71,8 @@ public class Surface implements Serializable {
         this.imgUrl = imgUrl;
         this.space = space;
         this.reports = reports;
+        this.reports = reports;
         this.expiredDate = expiredDate;
-    }
-
-    public void update(Surface surface) {
-        this.format = surface.format;
-        this.width = surface.width;
-        this.height = surface.height;
-        this.content = surface.content;
-        this.imgUrl = surface.imgUrl;
-        this.expiredDate = surface.expiredDate;
     }
 
     public Space getSpace() {
@@ -93,9 +87,6 @@ public class Surface implements Serializable {
         return reports;
     }
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
 
     public Short getId() {
         return id;
@@ -145,6 +136,10 @@ public class Surface implements Serializable {
         this.imgUrl = imgUrl;
     }
 
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -159,5 +154,16 @@ public class Surface implements Serializable {
 
     public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
+    }
+
+
+    public void update(Surface updatedSurface) {
+        this.format = updatedSurface.format;
+        this.width = updatedSurface.width;
+        this.height = updatedSurface.height;
+        this.content = updatedSurface.content;
+        this.imgUrl = updatedSurface.imgUrl;
+        this.reports = updatedSurface.reports;
+        this.expiredDate = updatedSurface.expiredDate;
     }
 }
