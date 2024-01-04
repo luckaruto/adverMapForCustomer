@@ -3,8 +3,8 @@ import HomePage from "./Pages/HomePage";
 import React from "react";
 
 import DetailsPage from "./Pages/DetailsPage";
-import FormReport from "./component/FormReport";
-import ReportComponent from "./component/ReportComponent";
+
+import DetailsReportPage from "./Pages/DetialsReportPage";
 
 function App() {
   const Layout = () => {
@@ -27,8 +27,8 @@ function App() {
           element: <DetailsPage />,
         },
         {
-          path: "test",
-          element: <FormReport />,
+          path: "/detailsReport/:reportId",
+          element: <DetailsReportPage />,
         },
       ],
     },

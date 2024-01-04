@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 import shortid from "shortid";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import { CookiesProvider, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { ReportService } from "../services/ReportServices";
 
@@ -48,6 +48,7 @@ class MyUploadAdapter {
 
 export default function FormReport() {
   const [cookies, setCookie] = useCookies(["user"]);
+
   const recaptcha = useRef();
   const [editorData, setEditorData] = useState("");
   const selectedSurface = useSelector((state) => state.nav.selectedSurface);

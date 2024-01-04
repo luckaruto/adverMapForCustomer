@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { Icon, setOptions } from "leaflet";
 import AutocompleteComponent from "../component/AutocompleteComponent";
 import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
 import {
   selectGeocoding,
   selectOrigin,
@@ -23,6 +24,8 @@ import Text from "./../component/Text";
 import FormReport from "../component/FormReport";
 import Loader from "../component/Loader";
 import ModelReport from "../component/ModelReport";
+import { ReportService } from "../services/ReportServices";
+import { useNavigate } from "react-router-dom";
 
 const defaultProps = {
   center: {
@@ -49,9 +52,11 @@ const customIconReportGreen = new L.Icon({
 
 export default function HomePage() {
   const [spaces, setSpaces] = useState([]);
+  const [report, setReport] = useState([]);
   const [surfaces, setSurfaces] = useState([]);
   const [state, setState] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const mapRef = useRef(null);
   const geocoding = useSelector(selectGeocoding);
@@ -59,6 +64,8 @@ export default function HomePage() {
   const reportValue = useSelector(selectReportValue);
   const AdverValue = useSelector(selectAdverValue);
   const [show, setShow] = useState(false);
+
+  const [cookies, setCookie] = useCookies(["user"]);
 
   const [selectedSpace, setSelectedSpace] = useState(null);
 
@@ -142,6 +149,10 @@ export default function HomePage() {
     setSelectedSpace(space);
   };
 
+  const handleClickMarkerReport = (report) => {
+    navigate(`/detailsReport/${report.id}`, { state: report });
+  };
+
   useEffect(() => {
     const fetchSpace = async () => {
       try {
@@ -159,6 +170,24 @@ export default function HomePage() {
     setShow(false);
 
     fetchSpace();
+  }, []);
+
+  useEffect(() => {
+    const existingIdentifier = cookies.user;
+    const fetchReport = async () => {
+      try {
+        const data = await ReportService.getReport(existingIdentifier);
+
+        setReport((prev) => {
+          return data;
+        });
+        console.log("fetch report:", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchReport();
   }, []);
 
   useEffect(() => {
@@ -234,24 +263,15 @@ export default function HomePage() {
                     </Marker>
                   ))}
                 {reportValue &&
-                  spaces.map((space, index) => (
+                  report.map((report, index) => (
                     <Marker
                       key={index}
-                      position={[space.latitude, space.longitude]}
-                      icon={customIconReportGreen}
+                      position={[report.latitude, report.longitude]}
+                      icon={state ? customIconReportGreen : customIconReportRed}
                       eventHandlers={{
-                        click: (e) => handleClickMarker(space),
+                        click: (e) => handleClickMarkerReport(report),
                       }}
-                    >
-                      <Popup>
-                        <SomeDetailComponent
-                          format={space.format}
-                          type={space.type}
-                          address={space.address}
-                          planned={space.planned}
-                        />
-                      </Popup>
-                    </Marker>
+                    ></Marker>
                   ))}
               </MarkerClusterGroup>
             ) : (
