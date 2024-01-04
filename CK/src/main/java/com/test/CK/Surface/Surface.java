@@ -60,8 +60,9 @@ public class Surface implements Serializable {
 
     }
 
-    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, Space space,
-            List<Report> reports, LocalDateTime expiredDate) {
+
+    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, Space space, List<Report> reports, LocalDateTime expiredDate) {
+
         this.id = id;
         this.format = format;
         this.width = width;
@@ -71,7 +72,6 @@ public class Surface implements Serializable {
         this.space = space;
         this.reports = reports;
         this.expiredDate = expiredDate;
-        this.space = space;
     }
 
     public Space getSpace() {
@@ -86,9 +86,6 @@ public class Surface implements Serializable {
         return reports;
     }
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
 
     public Short getId() {
         return id;
