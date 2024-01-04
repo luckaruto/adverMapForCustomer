@@ -44,4 +44,10 @@ public class ReportController {
         List<Report> reports=service.getBySurfaceId(surfaceId);
         return new ResponseEntity<>(reports,HttpStatus.OK);
     }
+    @GetMapping(path = "/user/{userAddress}")
+    public ResponseEntity<List<ReportDto>> getBySurfaceId(@PathVariable String userAddress){
+        List<ReportDto> reports=service.getByUserAddress(userAddress);
+        return new ResponseEntity<>(reports,HttpStatus.OK);
+    }
+
 }

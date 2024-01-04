@@ -1,10 +1,12 @@
 package com.test.CK.Reports;
 
+import com.test.CK.Space.Space;
 import com.test.CK.Surface.Surface;
 import com.test.CK.Surface.SurfaceRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,5 +41,32 @@ public class ReportService {
 
     public List<Report> getBySurfaceId(Short surfaceId){
         return reportRepository.findBySurfaceId(surfaceId);
+    }
+
+    public List<ReportDto> getByUserAddress(String userAddress) {
+        List<Report> reports = reportRepository.findByUserAddress(userAddress);
+        List<ReportDto> result = new ArrayList<>();
+
+        for (Report report : reports) {
+            Surface surface = report.getSurface();
+
+            if (surface != null) {
+                Space space = surface.getSpace();
+
+                if (space != null) {
+                    float latitude = space.getLatitude();
+                    float longitude = space.getLongitude();
+
+                    ReportDto reportDto = new ReportDto();
+                    reportDto.setReport(report);
+                    reportDto.setLatitude(latitude);
+                    reportDto.setLongitude(longitude);
+
+                    result.add(reportDto);
+                }
+            }
+        }
+
+        return result;
     }
 }
