@@ -99,6 +99,7 @@ export default function FormReport() {
     if (!captchaValue) {
       alert("Please verify the reCAPTCHA!");
     } else {
+      generateUniqueIdentifier(); // Implement a function to generate a unique identifier
       const formData = {
         address: selectedSurface.address,
         format: event.target.elements["grid-option"].value,
@@ -106,14 +107,13 @@ export default function FormReport() {
         email: event.target.elements["email"].value,
         phone: event.target.elements["phone"].value,
         content: editorData,
+        userAddress: cookies.user,
         imgUrl: extractImageUrls(editorData).join(),
       };
       const imageUrls = extractImageUrls(editorData);
       console.log("Image URLs:", imageUrls);
 
       console.log("Form Data:", formData);
-
-      generateUniqueIdentifier(); // Implement a function to generate a unique identifier
 
       // const res = await fetch("http://localhost:8000/verify", {
       //   method: "POST",
