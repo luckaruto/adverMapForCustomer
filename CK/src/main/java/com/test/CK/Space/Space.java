@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -55,11 +56,13 @@ public class Space implements Serializable {
 
     @OneToMany(mappedBy = "space")
     @JsonIgnore
-    private Set<Surface> surfaces=new LinkedHashSet<>();
+    private Set<Surface> surfaces = new LinkedHashSet<>();
 
-    public Space(){}
+    public Space() {
+    }
 
-    public Space(Short id, String address, float longitude, float latitude, String type, String format, Short ward, String imgUrl, boolean isPlanned, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Surface> surfaces) {
+    public Space(Short id, String address, float longitude, float latitude, String type, String format, Short ward,
+            String imgUrl, boolean isPlanned, LocalDateTime createdAt, LocalDateTime updatedAt, Set<Surface> surfaces) {
         this.id = id;
         this.address = address;
         this.longitude = longitude;
@@ -74,8 +77,8 @@ public class Space implements Serializable {
         this.surfaces = surfaces;
     }
 
-    public void update(Space updatedSpace){
-        this.address=updatedSpace.address;
+    public void update(Space updatedSpace) {
+        this.address = updatedSpace.address;
         this.longitude = updatedSpace.longitude;
         this.latitude = updatedSpace.latitude;
         this.type = updatedSpace.type;
@@ -84,7 +87,6 @@ public class Space implements Serializable {
         this.imgUrl = updatedSpace.imgUrl;
         this.isPlanned = updatedSpace.isPlanned;
     }
-
 
     public Short getId() {
         return id;

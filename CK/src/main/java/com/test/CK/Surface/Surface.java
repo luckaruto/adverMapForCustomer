@@ -71,7 +71,6 @@ public class Surface implements Serializable {
         this.imgUrl = imgUrl;
         this.space = space;
         this.reports = reports;
-        this.reports = reports;
         this.expiredDate = expiredDate;
     }
 
@@ -136,10 +135,6 @@ public class Surface implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -155,7 +150,6 @@ public class Surface implements Serializable {
     public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
     }
-
 
     public void update(Surface updatedSurface) {
         this.format = updatedSurface.format;
