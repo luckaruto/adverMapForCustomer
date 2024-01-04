@@ -21,7 +21,7 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/", element: <HomePage /> },
-        { path: "/test", element: <FormReport /> },
+
         {
           path: "/details/:surfaceId",
           element: <DetailsPage />,

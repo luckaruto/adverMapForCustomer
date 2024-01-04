@@ -2,11 +2,14 @@ import React, { useState, useRef } from "react";
 import Text from "./Text";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import axios from "axios";
+
 import { storage } from "../firebase";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
+import shortid from "shortid";
+
 import ReCAPTCHA from "react-google-recaptcha";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -42,6 +45,7 @@ class MyUploadAdapter {
 }
 
 export default function FormReport() {
+  const [cookies, setCookie] = useCookies(["user"]);
   const recaptcha = useRef();
   const [editorData, setEditorData] = useState("");
 
@@ -71,6 +75,21 @@ export default function FormReport() {
       return new MyUploadAdapter(loader);
     };
   }
+
+  const generateUniqueIdentifier = () => {
+    const existingIdentifier = cookies.user;
+
+    if (existingIdentifier) {
+      // If the cookie already exists, return the existing value
+      return existingIdentifier;
+    } else {
+      // Generate a unique ID using shortid
+      const newIdentifier = shortid.generate();
+      setCookie("user", newIdentifier, { path: "/" });
+      return newIdentifier;
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const captchaValue = recaptcha.current.getValue();
@@ -88,6 +107,11 @@ export default function FormReport() {
       console.log("Image URLs:", imageUrls);
 
       console.log("Form Data:", formData);
+
+      generateUniqueIdentifier(); // Implement a function to generate a unique identifier
+
+      console.log("Form Data:", formData);
+
       // const res = await fetch("http://localhost:8000/verify", {
       //   method: "POST",
       //   body: JSON.stringify({ captchaValue }),
