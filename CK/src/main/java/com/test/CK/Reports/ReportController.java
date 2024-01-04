@@ -19,9 +19,9 @@ public class ReportController {
     }
 
     @PostMapping(path = "/{surfaceId}")
-    public ResponseEntity<String> addReport(@RequestBody @Valid Report report, @PathVariable Short surfaceId){
+    public ResponseEntity<String> addReport(@RequestBody @Valid Report report, @PathVariable Short surfaceId) {
 
-        HttpStatus status = service.addReport(report,surfaceId);
+        HttpStatus status = service.addReport(report, surfaceId);
         switch (status) {
             case OK -> {
                 return new ResponseEntity<>("Create Report Success", status);
@@ -34,20 +34,24 @@ public class ReportController {
             }
         }
     }
+
     @GetMapping
-    public ResponseEntity<List<Report>> getAll(){
-        List<Report> reports= service.getAll();
-        return new ResponseEntity<>(reports,HttpStatus.OK);
+    public ResponseEntity<List<Report>> getAll() {
+        List<Report> reports = service.getAll();
+
+        return new ResponseEntity<>(reports, HttpStatus.OK);
     }
+
     @GetMapping(path = "/{surfaceId}")
-    public ResponseEntity<List<Report>> getBySurfaceId(@PathVariable Short surfaceId){
-        List<Report> reports=service.getBySurfaceId(surfaceId);
-        return new ResponseEntity<>(reports,HttpStatus.OK);
+    public ResponseEntity<List<Report>> getBySurfaceId(@PathVariable Short surfaceId) {
+        List<Report> reports = service.getBySurfaceId(surfaceId);
+        return new ResponseEntity<>(reports, HttpStatus.OK);
     }
+
     @GetMapping(path = "/user/{userAddress}")
-    public ResponseEntity<List<ReportDto>> getBySurfaceId(@PathVariable String userAddress){
-        List<ReportDto> reports=service.getByUserAddress(userAddress);
-        return new ResponseEntity<>(reports,HttpStatus.OK);
+    public ResponseEntity<List<ReportDto>> getBySurfaceId(@PathVariable String userAddress) {
+        List<ReportDto> reports = service.getByUserAddress(userAddress);
+        return new ResponseEntity<>(reports, HttpStatus.OK);
     }
 
 }
