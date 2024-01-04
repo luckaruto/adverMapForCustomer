@@ -10,6 +10,8 @@ import shortid from "shortid";
 
 import ReCAPTCHA from "react-google-recaptcha";
 import { CookiesProvider, useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
+import { ReportService } from "../services/ReportServices";
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -48,6 +50,7 @@ export default function FormReport() {
   const [cookies, setCookie] = useCookies(["user"]);
   const recaptcha = useRef();
   const [editorData, setEditorData] = useState("");
+  const selectedSurface = useSelector((state) => state.nav.selectedSurface);
 
   function extractImageUrls(html) {
     const parser = new DOMParser();
@@ -97,11 +100,13 @@ export default function FormReport() {
       alert("Please verify the reCAPTCHA!");
     } else {
       const formData = {
-        option: event.target.elements["grid-option"].value,
+        address: selectedSurface.address,
+        format: event.target.elements["grid-option"].value,
         name: event.target.elements["grid-name"].value,
         email: event.target.elements["email"].value,
         phone: event.target.elements["phone"].value,
         content: editorData,
+        imgUrl: extractImageUrls(editorData).join(),
       };
       const imageUrls = extractImageUrls(editorData);
       console.log("Image URLs:", imageUrls);
@@ -109,8 +114,6 @@ export default function FormReport() {
       console.log("Form Data:", formData);
 
       generateUniqueIdentifier(); // Implement a function to generate a unique identifier
-
-      console.log("Form Data:", formData);
 
       // const res = await fetch("http://localhost:8000/verify", {
       //   method: "POST",
@@ -123,7 +126,12 @@ export default function FormReport() {
 
       if (formData) {
         // make form submission
-        alert("Form submission successful!");
+        try {
+          await ReportService.postReport(formData, selectedSurface.id);
+          alert("Form submission successful!");
+        } catch (error) {
+          alert(error);
+        }
       } else {
         alert("reCAPTCHA validation failed!");
       }

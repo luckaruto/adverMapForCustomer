@@ -3,6 +3,8 @@ import Text from "./Text";
 import { ReactComponent as SvgInformation } from "../images/information.svg";
 import { ReactComponent as SvgReport } from "../images/report.svg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSurface } from "../redux/navSlice";
 
 export default function AdvertisementComponent({
   format,
@@ -17,6 +19,9 @@ export default function AdvertisementComponent({
   selectedSpace,
 }) {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   return (
     <div className={`flex flex-col border-2 rounded-sm ${className}`}>
       <div className="flex flex-col gap-2">
@@ -48,7 +53,10 @@ export default function AdvertisementComponent({
 
           <div
             className="border-2 border-red-500 p-1 rounded-md flex flex-row gap-2 justify-center items-center cursor-pointer "
-            onClick={HandleTrue}
+            onClick={() => {
+              HandleTrue();
+              dispatch(setSurface({ id: surfaceid, address: address }));
+            }}
           >
             <SvgReport className="h-4 w-4" />
             <Text className="text-red-500">Báo cáo vi phạm</Text>

@@ -10,6 +10,7 @@ import {
   setOrigin,
   selectReportValue,
   selectAdverValue,
+  setSurface,
 } from "../redux/navSlice";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
