@@ -33,11 +33,11 @@ public class Surface implements Serializable {
     @NotNull(message = "height is not null")
     private Float height;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "Content is not null")
     private String content;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "imgUrl is not null")
     private String imgUrl;
 

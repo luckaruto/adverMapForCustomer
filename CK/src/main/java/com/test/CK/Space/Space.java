@@ -21,7 +21,7 @@ public class Space implements Serializable {
     @Column(name = "id")
     private Short id;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "address is not null")
     private String address;
     @Column
@@ -40,7 +40,7 @@ public class Space implements Serializable {
     @Column
     private Short ward;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "imgUrl is not null")
     private String imgUrl;
 

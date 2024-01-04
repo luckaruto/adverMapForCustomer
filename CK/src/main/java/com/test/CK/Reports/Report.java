@@ -20,7 +20,7 @@ public class Report implements Serializable {
     @Column(name = "id")
     private Short id;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "address is not null")
     private String address;
 
@@ -36,7 +36,7 @@ public class Report implements Serializable {
     @CreationTimestamp
     private LocalDate reportDate;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "content is not null")
     private String content;
 
@@ -53,7 +53,7 @@ public class Report implements Serializable {
     @NotNull(message = "state is not null")
     private Short state;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     @NotNull(message = "img url not null")
     private String imgUrl;
 
