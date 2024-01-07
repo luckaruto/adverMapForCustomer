@@ -49,7 +49,8 @@ public class Report implements Serializable {
     private String phone;
 
     @Column
-    private Short state;
+    @Enumerated(EnumType.STRING)
+    private ReportState state;
 
     @Column(columnDefinition="TEXT")
     @NotNull(message = "img url not null")
@@ -63,10 +64,11 @@ public class Report implements Serializable {
     @Column
     private String userAddress;
 
+
     public Report() {
     }
 
-    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, Short state, String imgUrl, Surface surface, String userAddress) {
+    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, Surface surface, String userAddress) {
         this.id = id;
         this.address = address;
         this.format = format;
@@ -80,9 +82,6 @@ public class Report implements Serializable {
         this.surface = surface;
         this.userAddress = userAddress;
 
-        if(state==null){
-            this.state=0;
-        }
     }
 
     public Short getId() {
@@ -149,11 +148,11 @@ public class Report implements Serializable {
         this.phone = phone;
     }
 
-    public Short getState() {
+    public ReportState getState() {
         return state;
     }
 
-    public void setState(Short state) {
+    public void setState(ReportState state) {
         this.state = state;
     }
 

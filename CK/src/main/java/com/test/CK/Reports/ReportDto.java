@@ -17,13 +17,13 @@ public class ReportDto implements Serializable {
     private  String content;
     private  String email;
     private  String phone;
-    private  Short state;
+    private  ReportState state;
     private  String imgUrl;
     private  String userAddress;
     private  float longitude;
     private  float latitude;
 
-    public ReportDto(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, Short state, String imgUrl, String userAddress) {
+    public ReportDto(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, String userAddress) {
         this.id = id;
         this.address = address;
         this.format = format;
@@ -101,7 +101,7 @@ public class ReportDto implements Serializable {
         return phone;
     }
 
-    public Short getState() {
+    public ReportState getState() {
         return state;
     }
 

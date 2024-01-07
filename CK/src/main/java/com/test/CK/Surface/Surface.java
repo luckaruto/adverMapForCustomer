@@ -23,15 +23,16 @@ public class Surface implements Serializable {
 
     @Column
     @NotNull(message = "Format is not null")
-    private String format;
+    @Enumerated(EnumType.STRING)
+    private SurfaceFormat format;
 
     @Column
     @NotNull(message = "width is not null")
-    private Float width;
+    private Short width;
 
     @Column
     @NotNull(message = "height is not null")
-    private Float height;
+    private Short height;
 
     @Column(columnDefinition="TEXT")
     @NotNull(message = "Content is not null")
@@ -61,7 +62,7 @@ public class Surface implements Serializable {
     }
 
 
-    public Surface(Short id, String format, Float width, Float height, String content, String imgUrl, Space space, List<Report> reports, LocalDateTime expiredDate) {
+    public Surface(Short id, SurfaceFormat format, Short width, Short height, String content, String imgUrl, Space space, List<Report> reports, LocalDateTime expiredDate) {
 
         this.id = id;
         this.format = format;
@@ -95,27 +96,27 @@ public class Surface implements Serializable {
         this.id = id;
     }
 
-    public String getFormat() {
+    public SurfaceFormat getFormat() {
         return format;
     }
 
-    public void setFormat(String format) {
+    public void setFormat(SurfaceFormat format) {
         this.format = format;
     }
 
-    public Float getWidth() {
+    public Short getWidth() {
         return width;
     }
 
-    public void setWidth(Float width) {
+    public void setWidth(Short width) {
         this.width = width;
     }
 
-    public Float getHeight() {
+    public Short getHeight() {
         return height;
     }
 
-    public void setHeight(Float height) {
+    public void setHeight(Short height) {
         this.height = height;
     }
 
