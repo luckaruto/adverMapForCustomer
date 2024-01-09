@@ -3,6 +3,7 @@ package com.test.CK.Reports;
 import com.test.CK.Space.Space;
 import com.test.CK.Surface.Surface;
 import com.test.CK.Surface.SurfaceRepository;
+import com.test.CK.Ward.Ward;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,17 @@ public class ReportService {
         }
         else {
             Surface surface = optionalSurface.get();
+
+            var space = surface.getSpace();
+
+            Short wardId = null;
+            if (space != null){
+                wardId = space.getWard();
+                report.setWard(new Ward(wardId));
+            }
+
             report.setSurface(surface);
+
             reportRepository.save(report);
             surfaceRepository.save(surface); // Save the updated Surface entity
             return HttpStatus.OK;

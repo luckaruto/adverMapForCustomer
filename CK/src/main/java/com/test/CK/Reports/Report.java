@@ -2,6 +2,7 @@ package com.test.CK.Reports;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.test.CK.Surface.Surface;
+import com.test.CK.Ward.Ward;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -64,11 +65,17 @@ public class Report implements Serializable {
     @Column
     private String userAddress;
 
+    @Column(name = "response")
+    private String response;
+
+    @ManyToOne
+    @JoinColumn(name="ward_id")
+    private Ward ward;
 
     public Report() {
     }
 
-    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, Surface surface, String userAddress) {
+    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, Surface surface, String userAddress, String response, Ward ward) {
         this.id = id;
         this.address = address;
         this.format = format;
@@ -81,6 +88,8 @@ public class Report implements Serializable {
         this.imgUrl = imgUrl;
         this.surface = surface;
         this.userAddress = userAddress;
+        this.response = response;
+        this.ward = ward;
 
     }
 
@@ -178,5 +187,21 @@ public class Report implements Serializable {
 
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public Ward getWard() {
+        return ward;
+    }
+
+    public void setWard(Ward ward) {
+        this.ward = ward;
     }
 }

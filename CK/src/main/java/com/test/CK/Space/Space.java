@@ -29,7 +29,6 @@ public class Space implements Serializable {
     private float longitude;
     @Column
     @NotNull(message = "latitude is not null")
-
     private float latitude;
     @Column
     @NotNull(message = "type is not null")
@@ -37,7 +36,7 @@ public class Space implements Serializable {
     @Column
     @NotNull(message = "format is not null")
     private String format;
-    @Column
+    @Column(name = "ward_id")
     private Short ward;
 
     @Column(columnDefinition="TEXT")
