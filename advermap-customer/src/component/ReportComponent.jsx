@@ -9,28 +9,56 @@ export default function ReportComponent({
   email,
   format,
   name,
+  imgUrl,
   phone,
   className,
 }) {
-  return (
-    <div className="h-full  m-auto flex flex-col items-center gap-4 mt-3">
-      <Text className="font-extrabold text-[30px]">
-        {`Hình thức báo cáo : ${format}`}{" "}
-      </Text>
-      <Text className="font-medium">{`Họ và tên: ${name}`}</Text>
-      <Text className="font-thin">{`${address}`}</Text>
-      <Text className="font-medium">{`Email: ${email}`}</Text>
-      <Text className="font-medium">{`Phone: ${phone}`}</Text>
-      <Text className="font-medium">{`Nội dung báo cáo:`}</Text>
-      <div
-        className="bg-[#f6eee3] p-4 rounded-md"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-      <Text className="font-medium">{`Ngày tạo: ${reportDate}`}</Text>
+  function parseImageUrls(imageUrlsString) {
+    if (!imageUrlsString) {
+      return [];
+    }
 
-      <Text className="font-medium">{`Tình trạng xử lý: ${
-        state ? "Đã xử lý" : "Đang xử lý"
-      }`}</Text>
+    // Split the string into an array using the comma as the delimiter
+    const imageUrlsArray = imageUrlsString.split(",");
+
+    // Trim each URL to remove leading/trailing whitespaces
+    const trimmedImageUrls = imageUrlsArray.map((url) => url.trim());
+
+    return trimmedImageUrls;
+  }
+
+  const imageUrlsArray = parseImageUrls(imgUrl);
+
+  return (
+    <div className="h-full w-full flex flex-row">
+      <Carousel
+        transition={{ duration: 2 }}
+        className="rounded-e-xl h-full w-[60%]"
+      >
+        {imageUrlsArray.map((url) => (
+          <img src={url} alt="image 1" className="h-full w-full object-cover" />
+        ))}
+      </Carousel>
+
+      <div className="ml-3 flex flex-col gap-3">
+        <Text className="font-extrabold text-[30px]">
+          {`Hình thức báo cáo : ${format}`}{" "}
+        </Text>
+        <Text className="font-medium">{`Họ và tên: ${name}`}</Text>
+        <Text className="font-thin">{`${address}`}</Text>
+        <Text className="font-medium">{`Email: ${email}`}</Text>
+        <Text className="font-medium">{`Phone: ${phone}`}</Text>
+        <Text className="font-medium">{`Nội dung báo cáo:`}</Text>
+        <div
+          className="bg-[#f6eee3] p-4 rounded-md"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+        <Text className="font-medium">{`Ngày tạo: ${reportDate}`}</Text>
+
+        <Text className="font-medium">{`Tình trạng xử lý: ${
+          state ? "Đã xử lý" : "Đang xử lý"
+        }`}</Text>
+      </div>
     </div>
   );
 }

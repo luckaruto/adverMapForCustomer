@@ -7,6 +7,7 @@ import {
   selectAdverValue,
   selectReportValue,
 } from "../redux/navSlice";
+import DescriptionComponent from "./DescriptionComponent";
 export default function ToolComponent({ className }) {
   const dispatch = useDispatch();
 
@@ -23,7 +24,7 @@ export default function ToolComponent({ className }) {
 
   return (
     <div
-      className={`bg-gray-500 bg-opacity-[60%] rounded-lg items-center px-2 py-1  flex flew-row ${className} gap-4`}
+      className={` relative bg-gray-500 bg-opacity-[80%] rounded-lg items-center px-2 py-1  flex flew-row ${className} gap-4`}
     >
       <label className="relative inline-flex items-center cursor-pointer">
         <input
@@ -55,6 +56,7 @@ export default function ToolComponent({ className }) {
           Báo cáo vi phạm
         </Text>
       </label>
+      <DescriptionComponent className="absolute right-2 h-fit"></DescriptionComponent>
     </div>
   );
 }

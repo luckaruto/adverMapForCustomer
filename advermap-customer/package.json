@@ -18,6 +18,7 @@
     "firebase": "^10.7.1",
     "get-mac-address": "^1.0.0",
     "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0",
     "react": "^18.2.0",
     "react-cookie": "^7.0.0",
     "react-dom": "^18.2.0",

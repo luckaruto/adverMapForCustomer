@@ -26,6 +26,7 @@ export default function DetailsReportPage() {
           name={report.name}
           phone={report.phone}
           format={report.format}
+          imgUrl={report.imgUrl}
         />
       ) : (
         <div> Pending</div>
