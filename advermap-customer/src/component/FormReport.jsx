@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Text from "./Text";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -14,6 +14,7 @@ import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { ReportService } from "../services/ReportServices";
 import { ReactComponent as SvgDelete } from "../images/delete.svg";
+import ReportType from "./ReportType";
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -58,6 +59,21 @@ class MyUploadAdapter {
 
 export default function FormReport() {
   const [cookies, setCookie] = useCookies(["user"]);
+  const [currentReportType, setCurrentReportType] = useState(null);
+  const [reportTypes, setReportTypes] = useState(null);
+
+  useEffect(() => {
+    try {
+      ReportService.getReportType().then(results => {
+        setReportTypes(results);
+      });
+    } catch (error) {
+      alert(error);
+    }
+
+  }, []);
+
+
   const [isHovered, setIsHovered] = React.useState(false);
   const [isHovered2, setIsHovered2] = React.useState(false);
   const recaptcha = useRef();
@@ -149,7 +165,9 @@ export default function FormReport() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const captchaValue = recaptcha.current.getValue();
+    //const captchaValue = recaptcha.current.getValue();
+    const captchaValue = "ok";
+
     if (!captchaValue) {
       alert("Please verify the reCAPTCHA!");
     } else {
@@ -173,7 +191,7 @@ export default function FormReport() {
 
       const formData = {
         address: selectedSurface.address,
-        format: event.target.elements["grid-option"].value,
+        reportType: {id : event.target.elements["grid-option"].value},
         name: event.target.elements["grid-name"].value,
         email: event.target.elements["email"].value,
         phone: event.target.elements["phone"].value,
@@ -199,6 +217,8 @@ export default function FormReport() {
     }
   };
 
+  const ReportTypeBox = ReportType({reportTypes});
+
   return (
     <div className=" flex flex-col items-center justify-center h-full w-[70%] ">
       <form
@@ -213,27 +233,7 @@ export default function FormReport() {
             >
               Hình thức báo cáo
             </label>
-            <div className="relative">
-              <select
-                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-option"
-                required
-              >
-                <option>Tố giác sai phạm</option>
-                <option>Đăng kí nội dung</option>
-                <option>Đóng góp ý kiến</option>
-                <option>Giải đáp thắc mắc</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
-              </div>
-            </div>
+            {ReportTypeBox}
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label

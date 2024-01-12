@@ -30,4 +30,19 @@ export class ReportService {
       }
     });
   }
+
+  static async getReportType() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await api.get(PATH.REPORT + `/type/all`);
+        if (response.status === 200) {
+          resolve(response.data);
+        } else {
+          reject(response.data);
+        }
+      } catch (error) {
+        reject(error.message);
+      }
+    });
+  }
 }
