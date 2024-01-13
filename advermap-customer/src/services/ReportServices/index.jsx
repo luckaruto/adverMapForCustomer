@@ -16,6 +16,20 @@ export class ReportService {
       }
     });
   }
+  static async postReportSpace(report) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await api.post(PATH.REPORT, report);
+        if (response.status === 200) {
+          resolve(response.data);
+        } else {
+          reject(response.data);
+        }
+      } catch (error) {
+        reject(error.message);
+      }
+    });
+  }
   static async getReport(userAddress) {
     return new Promise(async (resolve, reject) => {
       try {

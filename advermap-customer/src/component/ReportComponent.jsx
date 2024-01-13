@@ -35,8 +35,13 @@ export default function ReportComponent({
         transition={{ duration: 2 }}
         className="rounded-e-xl h-full w-[60%]"
       >
-        {imageUrlsArray.map((url) => (
-          <img src={url} alt="image 1" className="h-full w-full object-cover" />
+        {imageUrlsArray.map((url, index) => (
+          <img
+            key={index}
+            src={url}
+            alt="image 1"
+            className="h-full w-full object-cover"
+          />
         ))}
       </Carousel>
 

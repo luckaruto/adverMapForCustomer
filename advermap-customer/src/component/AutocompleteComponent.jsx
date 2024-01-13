@@ -24,10 +24,7 @@ export default function AutocompleteComponent() {
   };
 
   return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyB11l8Cra3wEure_mAn1gaOuNkWKnRY1YM"
-      libraries={["places"]}
-    >
+    <LoadScript googleMapsApiKey={window.env.GOOGLE_API} libraries={["places"]}>
       <StandaloneSearchBox
         onLoad={(ref) => (inputRef.current = ref)}
         onPlacesChanged={handlePlaceChanged}

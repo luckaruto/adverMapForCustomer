@@ -7,6 +7,7 @@ const initialState = {
   ReportValue: true,
   selectedSurface: null,
   addressGeocoding: null,
+  selectedSpace: null,
 };
 
 export const navSlices = createSlice({
@@ -18,6 +19,9 @@ export const navSlices = createSlice({
     },
     setAddressGeocoding: (state, action) => {
       state.addressGeocoding = action.payload;
+    },
+    setSpaceInfo: (state, action) => {
+      state.selectedSpace = action.payload;
     },
 
     setGeocoding: (state, action) => {
@@ -41,6 +45,7 @@ export const {
   setReportValue,
   setAdverValue,
   setSurface,
+  setSpaceInfo,
   setAddressGeocoding,
 } = navSlices.actions;
 
@@ -48,6 +53,7 @@ export const {
 export const selectOrigin = (state) => state.nav.origin;
 export const selectAddressGeocoding = (state) => state.nav.addressGeocoding;
 export const selectGeocoding = (state) => state.nav.geocoding;
+export const selectedSpaceInfo = (state) => state.nav.selectedSpace;
 export const selectAdverValue = (state) => state.nav.AdverValue;
 export const selectReportValue = (state) => state.nav.ReportValue;
 

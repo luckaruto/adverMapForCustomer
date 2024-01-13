@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as SvgDelete } from "../images/delete.svg";
 import { ReactComponent as SvgCompass } from "../images/compass.svg";
 import InforAnySpaceComponent from "../component/InforAnySpaceComponent";
+import { setSpaceInfo } from "../redux/navSlice";
 
 const defaultProps = {
   center: {
@@ -108,8 +109,19 @@ export default function HomePage() {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
-  const HandleTrue = () => {
+  const HandleTrue = (index) => {
     setState(true);
+    if (index == 1) {
+      dispatch(setSpaceInfo(null));
+      dispatch(setAddressGeocoding(null));
+    } else if (index == 2) {
+      dispatch(setSurfaces(null));
+      dispatch(setSpaceInfo(null));
+    } else if (index == 3) {
+      dispatch(setSpaceInfo(selectedSpace));
+      dispatch(setAddressGeocoding(null));
+      dispatch(setSurfaces(null));
+    }
   };
 
   useEffect(() => {
@@ -144,14 +156,10 @@ export default function HomePage() {
           });
         } else return;
       } else if (geocoding && origin) {
-        mapRef.current.setView(
-          [geocoding.lat, geocoding.lng],
-          defaultProps.zoom,
-          {
-            animate: true,
-            duration: 1,
-          }
-        );
+        mapRef.current.setView([geocoding.lat, geocoding.lng], 300, {
+          animate: true,
+          duration: 1,
+        });
       } else {
         return;
       }
@@ -172,8 +180,8 @@ export default function HomePage() {
   const handleClickMarker = (space) => {
     setShow(true);
     setShowGeocoding(false);
+
     setSelectedSpace(space);
-    dispatch(setAddressGeocoding(space.address));
   };
   const handleClickMarkerGeocoding = () => {
     setShowGeocoding(true);
@@ -289,7 +297,7 @@ export default function HomePage() {
               // addressGeocoding={addressGeocoding}
               handleClickMarkerGeocoding={handleClickMarkerGeocoding}
             />
-            {spaces.length > 0 ? (
+            {spaces?.length > 0 ? (
               <MarkerClusterGroup>
                 {AdverValue &&
                   spaces.map((space, index) => (
@@ -342,7 +350,7 @@ export default function HomePage() {
             >
               <SvgDelete className="h-5 w-5"></SvgDelete>
             </button>
-            {surfaces.length > 0 ? (
+            {surfaces?.length > 0 ? (
               surfaces.map((surface) => (
                 <AdvertisementComponent
                   key={surface.id} // Add a unique key here
@@ -355,7 +363,7 @@ export default function HomePage() {
                   address={selectedSpace.address}
                   surfaceid={surface.id}
                   selectedSpace={selectedSpace}
-                  HandleTrue={HandleTrue}
+                  HandleTrue={() => HandleTrue(1)}
                 />
               ))
             ) : (
@@ -365,8 +373,8 @@ export default function HomePage() {
             )}
             <InforAnySpaceComponent
               className=""
-              address={selectedSpace.address}
-              HandleTrue={HandleTrue}
+              address={selectedSpace?.address}
+              HandleTrue={() => HandleTrue(3)}
             />
           </div>
         )}
@@ -385,8 +393,8 @@ export default function HomePage() {
 
             <InforAnySpaceComponent
               className=""
-              address={addressGeocoding.address}
-              HandleTrue={HandleTrue}
+              address={addressGeocoding?.address}
+              HandleTrue={() => HandleTrue(2)}
             />
           </div>
         )}

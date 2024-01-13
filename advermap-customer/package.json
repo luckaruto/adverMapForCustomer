@@ -53,11 +53,6 @@
       "react-app/jest"
     ]
   },
-  "react-dotenv": {
-    "whitelist": [
-      "Google_API"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -71,6 +66,8 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^16.3.1",
+    "dotenv-webpack": "^8.0.1",
     "tailwindcss": "^3.3.6"
   }
 }

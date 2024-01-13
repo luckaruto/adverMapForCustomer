@@ -11,7 +11,7 @@ import shortid from "shortid";
 
 import ReCAPTCHA from "react-google-recaptcha";
 import { useCookies } from "react-cookie";
-import { setSurface } from "../redux/navSlice";
+import { selectedSpaceInfo, setSpaceInfo, setSurface } from "../redux/navSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ReportService } from "../services/ReportServices";
 import { ReactComponent as SvgDelete } from "../images/delete.svg";
@@ -65,6 +65,10 @@ export default function FormReport() {
   const [reportTypes, setReportTypes] = useState(null);
   const dispatch = useDispatch();
   const addressGeocoding = useSelector(selectAddressGeocoding);
+  const selectedSpace = useSelector(selectedSpaceInfo);
+
+  console.log(addressGeocoding);
+  console.log(selectedSpace);
 
   useEffect(() => {
     try {
@@ -200,31 +204,70 @@ export default function FormReport() {
         imgUrl: imageUrls.join(),
       };
 
-      if (selectedSurface) {
+      if (selectedSurface !== null) {
+        console.log(1);
         formData.address = selectedSurface.address;
-      } else if (addressGeocoding) {
+        if (formData) {
+          // make form submission
+          try {
+            await ReportService.postReport(formData, selectedSurface.id);
+            alert("Form submission successful!");
+            dispatch(setSurface(null));
+          } catch (error) {
+            alert(error);
+          }
+        } else {
+          alert("reCAPTCHA validation failed!");
+        }
+      } else if (addressGeocoding !== null) {
+        console.log(2);
         formData.address = addressGeocoding.address;
-      }
+        formData.space = null;
+        formData.latitude = addressGeocoding?.position?.lat;
 
+        formData.longitude = addressGeocoding?.position?.lng;
+
+        if (formData) {
+          // make form submission
+          try {
+            await ReportService.postReportSpace(formData);
+            alert("Form submission successful!");
+
+            dispatch(setAddressGeocoding(null));
+          } catch (error) {
+            alert(error);
+          }
+        } else {
+          alert("reCAPTCHA validation failed!");
+        }
+      } else if (selectedSpace !== null) {
+        console.log(3);
+        formData.address = selectedSpace.address;
+        formData.space = {
+          id: selectedSpace.id,
+        };
+        formData.latitude = selectedSpace.latitude;
+
+        formData.longitude = selectedSpace.longitude;
+
+        if (formData) {
+          // make form submission
+          try {
+            await ReportService.postReportSpace(formData);
+            alert("Form submission successful!");
+
+            dispatch(setSpaceInfo(null));
+          } catch (error) {
+            alert(error);
+          }
+        } else {
+          alert("reCAPTCHA validation failed!");
+        }
+      }
       console.log("Image URLs:", imageUrls);
       console.log("Form Data:", formData);
-
-      if (formData) {
-        // make form submission
-        try {
-          await ReportService.postReport(formData, selectedSurface.id);
-          alert("Form submission successful!");
-          dispatch(setSurface(null));
-        } catch (error) {
-          alert(error);
-        }
-      } else {
-        alert("reCAPTCHA validation failed!");
-      }
     }
   };
-
-  const ReportTypeBox = ReportType({ reportTypes });
 
   return (
     <div className=" flex flex-col items-center justify-center h-full w-[70%] ">
@@ -240,7 +283,7 @@ export default function FormReport() {
             >
               Hình thức báo cáo
             </label>
-            {ReportTypeBox}
+            <ReportType reportTypes={reportTypes}> </ReportType>
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
