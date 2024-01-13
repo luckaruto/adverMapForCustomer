@@ -1,6 +1,7 @@
 package com.test.CK.Reports;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.test.CK.Space.Space;
 import com.test.CK.Surface.Surface;
 import com.test.CK.Ward.Ward;
 import jakarta.persistence.*;
@@ -23,10 +24,6 @@ public class Report implements Serializable {
 
     @Column(columnDefinition="TEXT")
     private String address;
-
-    @Column
-    @NotNull(message = "format is not null")
-    private String format;
 
     @Column
     @NotNull(message = "name is not null")
@@ -72,13 +69,25 @@ public class Report implements Serializable {
     @JoinColumn(name="ward_id")
     private Ward ward;
 
+    @ManyToOne
+    @JoinColumn(name="space_id")
+    private Space space;
+
+    @ManyToOne
+    @JoinColumn(name="report_type_id")
+    private ReportType reportType;
+
+    @Column(name = "longitude")
+    private Float longitude;
+
+    @Column(name = "latitude")
+    private Float latitude;
     public Report() {
     }
 
-    public Report(Short id, String address, String format, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, Surface surface, String userAddress, String response, Ward ward) {
+    public Report(Short id, String address, String name, LocalDate reportDate, String content, String email, String phone, ReportState state, String imgUrl, Surface surface, String userAddress, String response, Ward ward, Space space, ReportType reportType) {
         this.id = id;
         this.address = address;
-        this.format = format;
         this.name = name;
         this.reportDate = reportDate;
         this.content = content;
@@ -90,6 +99,8 @@ public class Report implements Serializable {
         this.userAddress = userAddress;
         this.response = response;
         this.ward = ward;
+        this.reportType =reportType;
+        this.space = space;
 
     }
 
@@ -107,14 +118,6 @@ public class Report implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
     }
 
     public String getName() {
@@ -201,7 +204,52 @@ public class Report implements Serializable {
         return ward;
     }
 
+    public Space getSpace() {
+        return space;
+    }
+
+    public void setSpace(Space space) {
+        this.space = space;
+    }
+
+    public ReportType getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(ReportType reportType) {
+        this.reportType = reportType;
+    }
+
     public void setWard(Ward ward) {
         this.ward = ward;
+    }
+
+    public ReportDto toDto() {
+        float longitudeN = 0;
+        if (this.longitude != null) {
+            longitudeN = this.longitude;
+        } else {
+            if (this.space != null) {
+                longitudeN = this.space.getLongitude();
+            } else {
+                if (this.surface != null && this.surface.getSpace() != null) {
+                    longitudeN = this.surface.getSpace().getLongitude();
+                }
+            }
+        }
+        float latitudeN = 0;
+        if (this.latitude != null) {
+            latitudeN = this.latitude;
+        } else {
+            if (this.space != null) {
+                latitudeN = this.space.getLatitude();
+            }else {
+                if (this.surface != null && this.surface.getSpace() != null) {
+                    latitudeN = this.surface.getSpace().getLatitude();
+                }
+            }
+        }
+
+        return new ReportDto(id, address,name,reportDate,content,email,phone,state,imgUrl,userAddress,longitudeN,latitudeN,surface,space,reportType);
     }
 }

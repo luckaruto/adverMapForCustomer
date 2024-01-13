@@ -54,4 +54,11 @@ public class ReportController {
         return new ResponseEntity<>(reports, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/type/all")
+    public ResponseEntity<List<ReportType>>  getReportTypeAll(
+    )   {
+        var data = service.findAllReportType();
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
 }

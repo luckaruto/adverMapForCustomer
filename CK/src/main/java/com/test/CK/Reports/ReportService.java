@@ -18,9 +18,12 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final SurfaceRepository surfaceRepository;
 
-    public ReportService( ReportRepository reportRepository, SurfaceRepository surfaceRepository) {
+    private final ReportTypeRepository reportTypeRepository;
+
+    public ReportService(ReportRepository reportRepository, SurfaceRepository surfaceRepository, ReportTypeRepository reportTypeRepository) {
         this.reportRepository = reportRepository;
         this.surfaceRepository = surfaceRepository;
+        this.reportTypeRepository = reportTypeRepository;
     }
 
     public HttpStatus addReport(Report report,Short surfaceId){
@@ -59,25 +62,13 @@ public class ReportService {
         List<ReportDto> result = new ArrayList<>();
 
         for (Report report : reports) {
-            Surface surface = report.getSurface();
-
-            if (surface != null) {
-                Space space = surface.getSpace();
-
-                if (space != null) {
-                    float latitude = space.getLatitude();
-                    float longitude = space.getLongitude();
-
-                    ReportDto reportDto = new ReportDto();
-                    reportDto.setReport(report);
-                    reportDto.setLatitude(latitude);
-                    reportDto.setLongitude(longitude);
-
-                    result.add(reportDto);
-                }
-            }
+            result.add(report.toDto());
         }
 
         return result;
+    }
+
+    public List<ReportType> findAllReportType(){
+        return reportTypeRepository.findAll();
     }
 }
