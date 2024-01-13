@@ -144,7 +144,6 @@ export default function HomePage() {
   useEffect(() => {
     setTimeout(() => {
       if (origin && !geocoding) {
-        console.log(origin);
         if (origin !== null) {
           mapRef.current.setView([origin.lat, origin.lng], defaultProps.zoom, {
             animate: true,

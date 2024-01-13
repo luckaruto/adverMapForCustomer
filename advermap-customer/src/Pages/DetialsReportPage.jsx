@@ -25,7 +25,7 @@ export default function DetailsReportPage() {
           email={report.email}
           name={report.name}
           phone={report.phone}
-          format={report.format}
+          reportType={report.reportType}
           imgUrl={report.imgUrl}
         />
       ) : (

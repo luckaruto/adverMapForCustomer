@@ -7,7 +7,7 @@ export default function ReportComponent({
   address,
   content,
   email,
-  format,
+  reportType,
   name,
   imgUrl,
   phone,
@@ -42,7 +42,7 @@ export default function ReportComponent({
 
       <div className="ml-3 flex flex-col gap-3">
         <Text className="font-extrabold text-[30px]">
-          {`Hình thức báo cáo : ${format}`}{" "}
+          {`Hình thức báo cáo : ${reportType?.name}`}{" "}
         </Text>
         <Text className="font-medium">{`Họ và tên: ${name}`}</Text>
         <Text className="font-thin">{`${address}`}</Text>
