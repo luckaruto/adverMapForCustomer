@@ -198,9 +198,6 @@ export default function FormReport() {
         content: editorData,
         userAddress: cookies.user,
         imgUrl: imageUrls.join(),
-        space: {id: space_id} || null,
-        latitude: ,
-
       };
 
       console.log("Image URLs:", imageUrls);
