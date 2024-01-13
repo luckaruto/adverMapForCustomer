@@ -37,7 +37,12 @@ const LocationMarker = ({ handleClickMarkerGeocoding }) => {
         setAddress((currentAddress) => {
           if (r.name) {
             // Dispatch the address only if it's valid
-            dispatch(setAddressGeocoding(r.name));
+            dispatch(
+              setAddressGeocoding({
+                address: r.name,
+                position: { lat: latlng.lat, lng: latlng.lng },
+              })
+            );
             return r.name;
           } else if (attempt <= 5) {
             // Retry with an increasing delay

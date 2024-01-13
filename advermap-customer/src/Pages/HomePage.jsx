@@ -23,7 +23,7 @@ import ToolComponent from "../component/ToolComponent";
 import { SpaceService } from "../services/SpaceServices";
 import { SurfaceServices } from "../services/SurfaceServices";
 import Text from "./../component/Text";
-import FormReport from "../component/FormReport";
+
 import Loader from "../component/Loader";
 import ModelReport from "../component/ModelReport";
 import { ReportService } from "../services/ReportServices";
@@ -39,11 +39,6 @@ const defaultProps = {
   },
   zoom: 13,
 };
-
-const customIcon = new L.Icon({
-  iconUrl: require("../images/marker.png"),
-  iconSize: [38, 38],
-});
 
 const customIconAdRed = new L.Icon({
   iconUrl: require("../images/advertisementRed.png"),
@@ -90,8 +85,6 @@ export default function HomePage() {
   const [cookies, setCookie] = useCookies(["user"]);
 
   const [selectedSpace, setSelectedSpace] = useState(null);
-
-  const [marker, setMarker] = useState(null);
 
   const HandleFalse = () => {
     setState(false);
@@ -259,9 +252,9 @@ export default function HomePage() {
         <div
           className={`relative ${
             show
-              ? "h-full w-[80%]"
+              ? "h-full w-full"
               : "h-full w-full" || showGeocoding
-              ? "h-full w-[80%]"
+              ? "h-full w-full"
               : "h-full w-full"
           }`}
         >
@@ -304,7 +297,13 @@ export default function HomePage() {
                     <Marker
                       key={index}
                       position={[space.latitude, space.longitude]}
-                      icon={space.planned ? customIconAdGreen : customIconAdRed}
+                      icon={
+                        space.planned
+                          ? space.totalSurface > 0
+                            ? customIconAdOrange
+                            : customIconAdGreen
+                          : customIconAdRed
+                      }
                       eventHandlers={{
                         click: (e) => handleClickMarker(space),
                       }}
@@ -367,7 +366,7 @@ export default function HomePage() {
             )}
             <InforAnySpaceComponent
               className=""
-              address={addressGeocoding}
+              address={selectedSpace.address}
               HandleTrue={HandleTrue}
             />
           </div>
@@ -387,7 +386,7 @@ export default function HomePage() {
 
             <InforAnySpaceComponent
               className=""
-              address={addressGeocoding}
+              address={addressGeocoding.address}
               HandleTrue={HandleTrue}
             />
           </div>

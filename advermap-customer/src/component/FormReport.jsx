@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Text from "./Text";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -11,10 +11,12 @@ import shortid from "shortid";
 
 import ReCAPTCHA from "react-google-recaptcha";
 import { useCookies } from "react-cookie";
-import { useSelector } from "react-redux";
+import { setSurface } from "../redux/navSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { ReportService } from "../services/ReportServices";
 import { ReactComponent as SvgDelete } from "../images/delete.svg";
 import ReportType from "./ReportType";
+import { selectAddressGeocoding, setAddressGeocoding } from "../redux/navSlice";
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -61,18 +63,18 @@ export default function FormReport() {
   const [cookies, setCookie] = useCookies(["user"]);
   const [currentReportType, setCurrentReportType] = useState(null);
   const [reportTypes, setReportTypes] = useState(null);
+  const dispatch = useDispatch();
+  const addressGeocoding = useSelector(selectAddressGeocoding);
 
   useEffect(() => {
     try {
-      ReportService.getReportType().then(results => {
+      ReportService.getReportType().then((results) => {
         setReportTypes(results);
       });
     } catch (error) {
       alert(error);
     }
-
   }, []);
-
 
   const [isHovered, setIsHovered] = React.useState(false);
   const [isHovered2, setIsHovered2] = React.useState(false);
@@ -165,8 +167,8 @@ export default function FormReport() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //const captchaValue = recaptcha.current.getValue();
-    const captchaValue = "ok";
+    const captchaValue = recaptcha.current.getValue();
+    // const captchaValue = "ok";
 
     if (!captchaValue) {
       alert("Please verify the reCAPTCHA!");
@@ -188,10 +190,8 @@ export default function FormReport() {
         const image2DownloadURL = await getDownloadURL(image2Ref);
         imageUrls.push(image2DownloadURL);
       }
-
       const formData = {
-        address: selectedSurface.address,
-        reportType: {id : event.target.elements["grid-option"].value},
+        reportType: { id: event.target.elements["grid-option"].value },
         name: event.target.elements["grid-name"].value,
         email: event.target.elements["email"].value,
         phone: event.target.elements["phone"].value,
@@ -199,6 +199,12 @@ export default function FormReport() {
         userAddress: cookies.user,
         imgUrl: imageUrls.join(),
       };
+
+      if (selectedSurface) {
+        formData.address = selectedSurface.address;
+      } else if (addressGeocoding) {
+        formData.address = addressGeocoding.address;
+      }
 
       console.log("Image URLs:", imageUrls);
       console.log("Form Data:", formData);
@@ -208,6 +214,7 @@ export default function FormReport() {
         try {
           await ReportService.postReport(formData, selectedSurface.id);
           alert("Form submission successful!");
+          dispatch(setSurface(null));
         } catch (error) {
           alert(error);
         }
@@ -217,7 +224,7 @@ export default function FormReport() {
     }
   };
 
-  const ReportTypeBox = ReportType({reportTypes});
+  const ReportTypeBox = ReportType({ reportTypes });
 
   return (
     <div className=" flex flex-col items-center justify-center h-full w-[70%] ">
