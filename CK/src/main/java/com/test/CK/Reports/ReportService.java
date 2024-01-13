@@ -1,6 +1,7 @@
 package com.test.CK.Reports;
 
 import com.test.CK.Space.Space;
+import com.test.CK.Space.SpaceRepository;
 import com.test.CK.Surface.Surface;
 import com.test.CK.Surface.SurfaceRepository;
 import com.test.CK.Ward.Ward;
@@ -18,11 +19,14 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final SurfaceRepository surfaceRepository;
 
+    private final SpaceRepository spaceRepository;
+
     private final ReportTypeRepository reportTypeRepository;
 
-    public ReportService(ReportRepository reportRepository, SurfaceRepository surfaceRepository, ReportTypeRepository reportTypeRepository) {
+    public ReportService(ReportRepository reportRepository, SurfaceRepository surfaceRepository, SpaceRepository spaceRepository, ReportTypeRepository reportTypeRepository) {
         this.reportRepository = reportRepository;
         this.surfaceRepository = surfaceRepository;
+        this.spaceRepository = spaceRepository;
         this.reportTypeRepository = reportTypeRepository;
     }
 
@@ -43,12 +47,47 @@ public class ReportService {
             }
 
             report.setSurface(surface);
-
+            report.setSpace(null);
             reportRepository.save(report);
-            surfaceRepository.save(surface); // Save the updated Surface entity
+
             return HttpStatus.OK;
         }
     }
+
+    public HttpStatus addSpaceReport(Report report){
+        var space = report.getSpace();
+        if (report.getSpace() != null){
+            Optional<Space> optionalSpace=spaceRepository.findById(report.getSpace().getId());
+            if(optionalSpace.isEmpty()){
+                return HttpStatus.NOT_FOUND;
+            }
+            space = optionalSpace.get();
+
+        }
+
+        Short wardId = null;
+        if (space != null){
+            wardId = space.getWard();
+            report.setWard(new Ward(wardId));
+        }
+
+
+        report.setSurface(null);
+        report.setSpace(space);
+
+        if (report.getLongitude() ==null){
+            report.setLongitude(space.getLongitude());
+        }
+
+        if (report.getLatitude() == null){
+            report.setLatitude(space.getLatitude());
+        }
+
+        reportRepository.save(report);
+        return HttpStatus.OK;
+
+    }
+
     public List<Report> getAll(){
        return reportRepository.findAll();
     }

@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @EnableWebSecurity
 @Configuration
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authConfig -> authConfig
                         .requestMatchers("/api/v1/**").permitAll()
+                        .requestMatchers("/swagger-ui/*","/v3/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 //                .addFilterAfter(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -37,6 +39,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:3000", "http://localhost"));
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
         // Alternatively, you can use setAllowedOriginPatterns:
         // configuration.setAllowedOriginPatterns(Arrays.asList("http://127.0.0.1:3000", "http://localhost"));
         configuration.setAllowedMethods(Arrays.asList("PUT", "DELETE", "POST", "GET"));

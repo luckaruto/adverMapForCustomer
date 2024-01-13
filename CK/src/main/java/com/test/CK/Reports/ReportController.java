@@ -35,6 +35,23 @@ public class ReportController {
         }
     }
 
+    @PostMapping(path = "")
+    public ResponseEntity<String> addSpaceReport(@RequestBody @Valid Report report) {
+
+        HttpStatus status = service.addSpaceReport(report);
+        switch (status) {
+            case OK -> {
+                return new ResponseEntity<>("Create Report Success", status);
+            }
+            case NOT_FOUND -> {
+                return new ResponseEntity<>("Space is not exist", status);
+            }
+            default -> {
+                return new ResponseEntity<>("Create Report Failed", HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<Report>> getAll() {
         List<Report> reports = service.getAll();
