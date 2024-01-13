@@ -2,14 +2,12 @@ import React, { useRef } from "react";
 import Autocomplete from "react-google-autocomplete";
 import { StandaloneSearchBox, LoadScript } from "@react-google-maps/api";
 import { ReactComponent as SvgFind } from "../images/find.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setGeocoding } from "../redux/navSlice";
-import env from "react-dotenv";
 
 export default function AutocompleteComponent() {
   const inputRef = useRef();
   const dispatch = useDispatch();
-  const states = useSelector((state) => state.nav);
 
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
@@ -24,8 +22,6 @@ export default function AutocompleteComponent() {
       );
     }
   };
-  console.log(states.geocoding);
-  console.log(env.Google_API);
 
   return (
     <LoadScript

@@ -6,6 +6,7 @@ const initialState = {
   AdverValue: true,
   ReportValue: true,
   selectedSurface: null,
+  addressGeocoding: null,
 };
 
 export const navSlices = createSlice({
@@ -14,6 +15,9 @@ export const navSlices = createSlice({
   reducers: {
     setOrigin: (state, action) => {
       state.origin = action.payload;
+    },
+    setAddressGeocoding: (state, action) => {
+      state.addressGeocoding = action.payload;
     },
 
     setGeocoding: (state, action) => {
@@ -37,10 +41,12 @@ export const {
   setReportValue,
   setAdverValue,
   setSurface,
+  setAddressGeocoding,
 } = navSlices.actions;
 
 // selector
 export const selectOrigin = (state) => state.nav.origin;
+export const selectAddressGeocoding = (state) => state.nav.addressGeocoding;
 export const selectGeocoding = (state) => state.nav.geocoding;
 export const selectAdverValue = (state) => state.nav.AdverValue;
 export const selectReportValue = (state) => state.nav.ReportValue;

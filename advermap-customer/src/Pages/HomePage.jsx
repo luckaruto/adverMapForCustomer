@@ -12,7 +12,8 @@ import {
   setOrigin,
   selectReportValue,
   selectAdverValue,
-  setSurface,
+  selectAddressGeocoding,
+  setAddressGeocoding,
 } from "../redux/navSlice";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
@@ -29,6 +30,7 @@ import { ReportService } from "../services/ReportServices";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as SvgDelete } from "../images/delete.svg";
 import { ReactComponent as SvgCompass } from "../images/compass.svg";
+import InforAnySpaceComponent from "../component/InforAnySpaceComponent";
 
 const defaultProps = {
   center: {
@@ -81,7 +83,9 @@ export default function HomePage() {
   const origin = useSelector(selectOrigin);
   const reportValue = useSelector(selectReportValue);
   const AdverValue = useSelector(selectAdverValue);
+  const addressGeocoding = useSelector(selectAddressGeocoding);
   const [show, setShow] = useState(false);
+  const [showGeocoding, setShowGeocoding] = useState(false);
 
   const [cookies, setCookie] = useCookies(["user"]);
 
@@ -175,7 +179,13 @@ export default function HomePage() {
 
   const handleClickMarker = (space) => {
     setShow(true);
+    setShowGeocoding(false);
     setSelectedSpace(space);
+    dispatch(setAddressGeocoding(space.address));
+  };
+  const handleClickMarkerGeocoding = () => {
+    setShowGeocoding(true);
+    setShow(false);
   };
 
   const handleClickMarkerReport = (report) => {
@@ -236,6 +246,10 @@ export default function HomePage() {
     }
   }, [selectedSpace]);
 
+  useEffect(() => {
+    console.log(addressGeocoding);
+  }, [addressGeocoding]);
+
   if (spaces.length <= 0) return <Loader title="Loading songs..." />;
 
   return (
@@ -243,7 +257,13 @@ export default function HomePage() {
       {state == true && <ModelReport HandleFalse={HandleFalse} />}
       <div className="h-full w-full flex flex-row">
         <div
-          className={`relative ${show ? "h-full w-[80%]" : "h-full w-full"}`}
+          className={`relative ${
+            show
+              ? "h-full w-[80%]"
+              : "h-full w-full" || showGeocoding
+              ? "h-full w-[80%]"
+              : "h-full w-full"
+          }`}
         >
           {/* AutocompleteComponent */}
           <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 w-[90%] h-fit">
@@ -273,7 +293,10 @@ export default function HomePage() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
 
-            <LocationMarker />
+            <LocationMarker
+              // addressGeocoding={addressGeocoding}
+              handleClickMarkerGeocoding={handleClickMarkerGeocoding}
+            />
             {spaces.length > 0 ? (
               <MarkerClusterGroup>
                 {AdverValue &&
@@ -314,7 +337,7 @@ export default function HomePage() {
           </MapContainer>
         </div>
         {show && (
-          <div className="flex flex-col h-full w-[20%] overflow-auto">
+          <div className="relative flex flex-col h-full w-[20%] overflow-auto">
             <button
               className="flex items-end justify-end"
               onClick={() => setShow(false)}
@@ -342,6 +365,31 @@ export default function HomePage() {
                 Không có biển quảng cáo trên địa điểm này
               </Text>
             )}
+            <InforAnySpaceComponent
+              className=""
+              address={addressGeocoding}
+              HandleTrue={HandleTrue}
+            />
+          </div>
+        )}
+        {showGeocoding && (
+          <div className="relative flex flex-col h-full w-[20%] overflow-auto">
+            <button
+              className="flex items-end justify-end"
+              onClick={() => setShowGeocoding(false)}
+            >
+              <SvgDelete className="h-5 w-5"></SvgDelete>
+            </button>
+
+            <Text className={"font-bold text-center m-auto"}>
+              Không có biển quảng cáo trên địa điểm này
+            </Text>
+
+            <InforAnySpaceComponent
+              className=""
+              address={addressGeocoding}
+              HandleTrue={HandleTrue}
+            />
           </div>
         )}
       </div>
