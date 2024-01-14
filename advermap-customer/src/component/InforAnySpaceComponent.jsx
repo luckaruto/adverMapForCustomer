@@ -10,7 +10,7 @@ export default function InforAnySpaceComponent({
 }) {
   const dispatch = useDispatch();
   return (
-    <div className="absolute bg-green-200 bottom-0 m-2 p-2 rounded-xl border-gray-200 flex flex-col border-2 justify-end items-end ">
+    <div className=" bg-green-200 bottom-0 m-2 p-2 rounded-xl border-gray-200 flex flex-col border-2 justify-end items-end ">
       <div className="ml-3 flex flex-col w-full">
         <Text className="font-extrabold text-xl">Thông tin địa điểm</Text>
         <Text>{address}</Text>

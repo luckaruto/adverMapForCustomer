@@ -23,7 +23,7 @@ export default function ModelReport(props) {
       {ReactDOM.createPortal(
         <>
           <div className=" modalTeacher hover:shadow-bs1 h-[80%] flex flex-row items-center justify-center">
-            <FormReport />
+            <FormReport HandleFalse={props.HandleFalse} />
           </div>
         </>,
         document.getElementById("root_2")

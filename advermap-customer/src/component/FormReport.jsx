@@ -59,7 +59,7 @@ class MyUploadAdapter {
   }
 }
 
-export default function FormReport() {
+export default function FormReport(props) {
   const [cookies, setCookie] = useCookies(["user"]);
   const [currentReportType, setCurrentReportType] = useState(null);
   const [reportTypes, setReportTypes] = useState(null);
@@ -213,6 +213,7 @@ export default function FormReport() {
             await ReportService.postReport(formData, selectedSurface.id);
             alert("Form submission successful!");
             dispatch(setSurface(null));
+            props.HandleFalse();
           } catch (error) {
             alert(error);
           }
@@ -234,6 +235,7 @@ export default function FormReport() {
             alert("Form submission successful!");
 
             dispatch(setAddressGeocoding(null));
+            props.HandleFalse();
           } catch (error) {
             alert(error);
           }
@@ -257,6 +259,7 @@ export default function FormReport() {
             alert("Form submission successful!");
 
             dispatch(setSpaceInfo(null));
+            props.HandleFalse();
           } catch (error) {
             alert(error);
           }
@@ -293,15 +296,12 @@ export default function FormReport() {
               Họ và tên{" "}
             </label>
             <input
-              className=" appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+              className=" appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
               id="grid-name"
               type="text"
               placeholder="Nguyễn Văn A"
               required
             />
-            <p className="text-red-500 text-xs italic">
-              Please fill out this field.
-            </p>
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6">
             <label

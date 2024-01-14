@@ -88,7 +88,21 @@ export default function HomePage() {
   const [selectedSpace, setSelectedSpace] = useState(null);
 
   const HandleFalse = () => {
+    const existingIdentifier = cookies.user;
+    const fetchReport = async () => {
+      try {
+        const data = await ReportService.getReport(existingIdentifier);
+
+        setReport((prev) => {
+          return data;
+        });
+        console.log("fetch report:", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     setState(false);
+    fetchReport();
   };
 
   var options = {
@@ -235,7 +249,7 @@ export default function HomePage() {
         const data = await SurfaceServices.getBySpaceId(id);
         console.log(`fetch Surfaces of Space ${id}`, data);
         setSurfaces((prev) => data);
-        console.log(spaces);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -343,7 +357,7 @@ export default function HomePage() {
           </MapContainer>
         </div>
         {show && (
-          <div className="relative flex flex-col h-full w-[20%] overflow-auto">
+          <div className="flex flex-col h-full w-[20%] overflow-auto">
             <button
               className="flex items-end justify-end"
               onClick={() => setShow(false)}

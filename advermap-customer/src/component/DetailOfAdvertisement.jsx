@@ -2,41 +2,55 @@ import React from "react";
 import markerImage from "../images/marker.png";
 import { Carousel } from "@material-tailwind/react"; // Correct import
 import Text from "./Text";
-
+import { ReactComponent as SvgReport } from "../images/report.svg";
+import { useDispatch } from "react-redux";
+import { setSurface } from "../redux/navSlice";
 export default function DetailOfAdvertisement({
   format,
   width,
   height,
-  img_url,
+  imgUrl,
   content,
   created_at,
   updated_at,
   type,
   formatspace,
+  HandleTrue,
+  surfaceid,
   address,
   className,
 }) {
+  function parseImageUrls(imageUrlsString) {
+    if (!imageUrlsString) {
+      return [];
+    }
+
+    // Split the string into an array using the comma as the delimiter
+    const imageUrlsArray = imageUrlsString.split(",");
+
+    // Trim each URL to remove leading/trailing whitespaces
+    const trimmedImageUrls = imageUrlsArray.map((url) => url.trim());
+
+    return trimmedImageUrls;
+  }
+  const dispatch = useDispatch();
+
+  const imageUrlsArray = parseImageUrls(imgUrl);
+
   return (
     <div className="h-full w-full flex flex-row">
       <Carousel
         transition={{ duration: 2 }}
         className="rounded-e-xl h-full w-[60%]"
       >
-        <img
-          src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
-          alt="image 1"
-          className="h-full w-full object-cover"
-        />
-        <img
-          src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
-          alt="image 2"
-          className="h-full w-full object-cover"
-        />
-        <img
-          src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
-          alt="image 3"
-          className="h-full w-full object-cover"
-        />
+        {imageUrlsArray.map((url, index) => (
+          <img
+            key={index}
+            src={url}
+            alt="image 1"
+            className="h-full w-full object-contain"
+          />
+        ))}
       </Carousel>
       <div className="ml-3 flex flex-col gap-3">
         <Text className="font-extrabold text-[30px]">
@@ -53,6 +67,16 @@ export default function DetailOfAdvertisement({
         <Text className="font-medium">{`Hình thức: ${formatspace}`}</Text>
 
         <Text className="font-medium">{`Loại biển quảng cáo: ${format}`}</Text>
+        <div
+          className="border-2 border-red-500 p-1 rounded-md flex flex-row gap-2 justify-center items-center cursor-pointer "
+          onClick={() => {
+            HandleTrue();
+            dispatch(setSurface({ id: surfaceid, address: address }));
+          }}
+        >
+          <SvgReport className="h-4 w-4" />
+          <Text className="text-red-500">Báo cáo vi phạm</Text>
+        </div>
       </div>
     </div>
   );
