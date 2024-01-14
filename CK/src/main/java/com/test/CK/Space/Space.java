@@ -182,4 +182,8 @@ public class Space implements Serializable {
     public void setSurfaces(Set<Surface> surfaces) {
         this.surfaces = surfaces;
     }
+
+    public SpaceDto toDto(){
+        return new SpaceDto(id,address,longitude,latitude,type,format,imgUrl,isPlanned,ward, 0L);
+    }
 }

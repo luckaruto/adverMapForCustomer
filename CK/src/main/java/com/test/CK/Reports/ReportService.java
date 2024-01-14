@@ -43,11 +43,15 @@ public class ReportService {
             Short wardId = null;
             if (space != null){
                 wardId = space.getWard();
-                report.setWard(new Ward(wardId));
+                if (wardId != null) {
+                    report.setWard(new Ward(wardId));
+                }
             }
 
             report.setSurface(surface);
             report.setSpace(null);
+
+
             reportRepository.save(report);
 
             return HttpStatus.OK;
@@ -65,10 +69,11 @@ public class ReportService {
 
         }
 
-        Short wardId = null;
+        var ward = new Ward((short) 1);
         if (space != null){
-            wardId = space.getWard();
-            report.setWard(new Ward(wardId));
+            var wardId = space.getWard();
+            ward = new Ward(wardId);
+            report.setWard(ward);
         }
 
 

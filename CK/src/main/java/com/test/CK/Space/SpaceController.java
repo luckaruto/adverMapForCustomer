@@ -1,25 +1,38 @@
 package com.test.CK.Space;
 
+import com.test.CK.Surface.SurfaceRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
 @RequestMapping(path = "/api/v1/spaces")
 public class SpaceController {
     private final SpaceService service;
+    private final SurfaceRepository surfaceRepository;
 
-    public SpaceController(SpaceService service) {
+    public SpaceController(SpaceService service, SurfaceRepository surfaceRepository) {
         this.service = service;
+        this.surfaceRepository = surfaceRepository;
     }
 
     @GetMapping
-    public ResponseEntity<List<Space>> getAll(){
+    public ResponseEntity<List<SpaceDto>> getAll(){
         List<Space> spaces = service.getAll();
-        return new ResponseEntity<>(spaces, HttpStatus.OK);
+
+        List<SpaceDto> spacedtos = new ArrayList<>();
+        for (var i =0 ; i < spaces.size(); i++){
+            var dto = spaces.get(i).toDto() ;
+            var count = this.surfaceRepository.countBySpaceId(dto.getId());
+            dto.setTotalSurface(count);
+            spacedtos.add(dto);
+        }
+
+        return new ResponseEntity<>(spacedtos, HttpStatus.OK);
     }
     @GetMapping(path = "/{id}")
     public ResponseEntity<Space> getById(@PathVariable @Valid Short id){
