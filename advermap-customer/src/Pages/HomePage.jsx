@@ -332,6 +332,7 @@ export default function HomePage() {
                       <Popup>
                         <SomeDetailComponent
                           format={space.format}
+                          imgUrl={space.imgUrl}
                           type={space.type}
                           address={space.address}
                           planned={space.planned}
