@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "@material-tailwind/react"; // Correct import
 import Text from "./Text";
+import { formatDateTime } from "../utils/format";
 export default function ReportComponent({
   reportDate,
   state,
@@ -58,7 +59,9 @@ export default function ReportComponent({
           className="bg-[#f6eee3] p-4 rounded-md"
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <Text className="font-medium">{`Ngày tạo: ${reportDate}`}</Text>
+        <Text className="font-medium">{`Ngày tạo: ${formatDateTime(
+          reportDate
+        )}`}</Text>
 
         <Text className="font-medium">{`Tình trạng xử lý: ${
           state ? "Đã xử lý" : "Đang xử lý"

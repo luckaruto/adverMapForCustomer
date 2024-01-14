@@ -5,6 +5,7 @@ import Text from "./Text";
 import { ReactComponent as SvgReport } from "../images/report.svg";
 import { useDispatch } from "react-redux";
 import { setSurface } from "../redux/navSlice";
+import { formatDateTime } from "../utils/format";
 export default function DetailOfAdvertisement({
   format,
   width,
@@ -62,7 +63,9 @@ export default function DetailOfAdvertisement({
           {`Kích thước: ${width}m X ${height}m`}
         </Text>
         <Text className="font-medium">{`Nội dung biển quảng cáo: ${content}`}</Text>
-        <Text className="font-medium">{`Ngày đặt: ${created_at} - Ngày đến hạn: ${updated_at}`}</Text>
+        <Text className="font-medium">{`Ngày đặt: ${formatDateTime(
+          created_at
+        )} - Ngày đến hạn: ${formatDateTime(updated_at)}`}</Text>
         <Text className="font-medium">{`Phân loại: ${type}`}</Text>
         <Text className="font-medium">{`Hình thức: ${formatspace}`}</Text>
 
